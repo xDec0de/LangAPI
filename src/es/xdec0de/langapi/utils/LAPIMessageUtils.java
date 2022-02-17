@@ -4,15 +4,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import es.xdec0de.langapi.api.LAPI;
+import es.xdec0de.langapi.api.LangAPI;
 import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
 import net.md_5.bungee.api.ChatColor;
 
 public class LAPIMessageUtils {
 
 	public String get(Player player, LAPIMsg message) {
-		return LAPI.getAPI().getString(message.getPath(), LAPI.getInstance(), player)
-				.replaceAll("%error%", LAPI.getAPI().getString(LAPIMsg.ERROR_PREFIX.getPath(), LAPI.getInstance(), player))
-				.replaceAll("%prefix%", LAPI.getAPI().getString(LAPIMsg.PREFIX.getPath(), LAPI.getInstance(), player));
+		LangAPI api = LangAPI.getInstance();
+		return api.getString(message.getPath(), LAPI.getInstance(), player)
+				.replaceAll("%error%", api.getString(LAPIMsg.ERROR_PREFIX.getPath(), LAPI.getInstance(), player))
+				.replaceAll("%prefix%", api.getString(LAPIMsg.PREFIX.getPath(), LAPI.getInstance(), player));
 	}
 
 	public String get(Player player, LAPIMsg message, String[]... replace) {
@@ -26,9 +28,10 @@ public class LAPIMessageUtils {
 	}
 
 	public String get(CommandSender sender, LAPIMsg message) {
-		return LAPI.getAPI().getString(message.getPath(), LAPI.getInstance(), sender)
-				.replaceAll("%error%", LAPI.getAPI().getString(LAPIMsg.ERROR_PREFIX.getPath(), LAPI.getInstance(), sender))
-				.replaceAll("%prefix%", LAPI.getAPI().getString(LAPIMsg.PREFIX.getPath(), LAPI.getInstance(), sender));
+		LangAPI api = LangAPI.getInstance();
+		return api.getString(message.getPath(), LAPI.getInstance(), sender)
+				.replaceAll("%error%", api.getString(LAPIMsg.ERROR_PREFIX.getPath(), LAPI.getInstance(), sender))
+				.replaceAll("%prefix%", api.getString(LAPIMsg.PREFIX.getPath(), LAPI.getInstance(), sender));
 	}
 
 	public String get(CommandSender sender, LAPIMsg message, String[]... replace) {

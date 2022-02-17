@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.api.Lang;
+import es.xdec0de.langapi.api.LangAPI;
 import es.xdec0de.langapi.api.LangPlayer;
 import es.xdec0de.langapi.api.gui.LangGUI;
 import es.xdec0de.langapi.utils.files.Config;
@@ -28,7 +29,7 @@ public class LangCMD extends Config implements CommandExecutor {
 				LAPI.getMessages().send(sndr, LAPIMsg.NO_CONSOLE);
 		} else if(args.length == 1) {
 			if(sndr instanceof Player) {
-				LangPlayer sender = LAPI.getAPI().getPlayer(sndr);
+				LangPlayer sender = LangAPI.getInstance().getPlayer(sndr);
 				try {
 					Lang lang = Lang.valueOf(args[0].toUpperCase());
 					sender.setLang(lang);
@@ -44,7 +45,7 @@ public class LangCMD extends Config implements CommandExecutor {
 			try {
 				Lang lang = Lang.valueOf(args[0].toUpperCase());
 				if(Bukkit.getPlayer(args[1]) != null) {
-					LangPlayer target = LAPI.getAPI().getPlayer(args[1]);
+					LangPlayer target = LangAPI.getInstance().getPlayer(args[1]);
 					target.setLang(lang);
 					if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.DISABLE_AUTOSELECT) && target.hasAutoSelect())
 						target.setAutoSelect(false);

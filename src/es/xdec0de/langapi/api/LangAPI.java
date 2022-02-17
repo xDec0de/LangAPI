@@ -33,14 +33,21 @@ import es.xdec0de.langapi.utils.files.enums.LAPISetting;
  */
 public class LangAPI extends FileUtils {
 
-	public LangAPI() throws SecurityException {
-		// TODO remove
-		if(LAPI.getAPI() != null) {
-			Bukkit.getServer().getPluginManager().disablePlugin(LAPI.getInstance());
-			throw new SecurityException("A LangAPI object has been manually created when LAPI.getAPI() is not null.");
+	private static LangAPI instance;
+
+	private LangAPI() {
+		// Just to add plugin reload support
+		if(!Bukkit.getOnlinePlayers().isEmpty()) {
+			DataHandler dataHandler = DataHandler.getInstance();
+			for(Player player : Bukkit.getOnlinePlayers())
+				dataHandler.onlineCache.put(player.getUniqueId(), new LangPlayer(player.getUniqueId()));
 		}
 	}
-	
+
+	public static LangAPI getInstance() {
+		return instance != null ? instance : (instance = new LangAPI());
+	}
+
 	private String applyColor(String message) {
 		char COLOR_CHAR = '\u00A7';
 		final Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]{6})");

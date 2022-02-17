@@ -22,7 +22,6 @@ public class LAPI extends JavaPlugin {
 	private static Connection connection;
 
 	private static FileUtils files;
-	private static LangAPI api;
 	private static LAPIMessageUtils msgUtils;
 	//private static UpdateChecker updater;
 
@@ -67,10 +66,8 @@ public class LAPI extends JavaPlugin {
 		} else
 			files.setupPlayers();
 		msgUtils = new LAPIMessageUtils();
-		LangAPI tempAPI = new LangAPI();
-		api = tempAPI;
-		api.createFiles(instance);
-		api.updateFiles(instance, ignoredMessages());
+		LangAPI.getInstance().createFiles(this);
+		LangAPI.getInstance().updateFiles(this, ignoredMessages());
 		getCommand("lang").setExecutor(new LangCMD());
 		getServer().getPluginManager().registerEvents(DataHandler.getInstance(), this);
 		getServer().getPluginManager().registerEvents(new LangGUI(), this);
@@ -161,19 +158,6 @@ public class LAPI extends JavaPlugin {
 
 	public static FileUtils getFiles() {
 		return files;
-	}
-
-	/**
-	 * The method to access LangAPI's API.
-	 * 
-	 * @return An instance of the LangAPI class.
-	 * 
-	 * @see #getInstance()
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public static LangAPI getAPI() {
-		return api;
 	}
 
 	/**

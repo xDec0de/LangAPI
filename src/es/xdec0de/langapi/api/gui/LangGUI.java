@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.api.Lang;
+import es.xdec0de.langapi.api.LangAPI;
 import es.xdec0de.langapi.api.LangPlayer;
 import es.xdec0de.langapi.utils.HeadDatabase;
 import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
@@ -42,7 +43,7 @@ public class LangGUI implements Listener {
 	 * @since LangAPI v1.0
 	 */
 	public void open(Player player) {
-		Inventory gui = Bukkit.createInventory(null, LAPI.getFiles().getConfig().getInt(LAPISetting.LANG_GUI_ROWS)*9, LAPI.getAPI().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getInstance(), player));
+		Inventory gui = Bukkit.createInventory(null, LAPI.getFiles().getConfig().getInt(LAPISetting.LANG_GUI_ROWS)*9, LangAPI.getInstance().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getInstance(), player));
 		if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.LANG_GUI_FILL_ENABLED)) {
 			for(int row = 0 ; row < LAPI.getFiles().getConfig().getInt(LAPISetting.LANG_GUI_ROWS) ; row++) {
 				ItemStack fill = getFillItem(player, row+1);
@@ -53,7 +54,7 @@ public class LangGUI implements Listener {
 				}
 			}
 		}
-		LAPI.getAPI().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getInstance(), player);
+		LangAPI.getInstance().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getInstance(), player);
 		for(String ID : getItems()) {
 			gui.setItem(LAPI.getFiles().getConfig().get().getInt("Commands.Lang.GUI.Items."+ID+".Slot"), getItem(ID, player));
 		}
@@ -67,7 +68,7 @@ public class LangGUI implements Listener {
 		ItemStack fill = new ItemStack(material, 1);
 		fill.setDurability((short)12);
 		ItemMeta fillmeta = fill.getItemMeta();
-		fillmeta.setDisplayName(LAPI.getAPI().getString("Commands.Lang.GUI.Fill."+row, LAPI.getInstance(), player));
+		fillmeta.setDisplayName(LangAPI.getInstance().getString("Commands.Lang.GUI.Fill."+row, LAPI.getInstance(), player));
 		fill.setItemMeta(fillmeta);
 		return fill;
 	}
@@ -97,8 +98,8 @@ public class LangGUI implements Listener {
 			item = new ItemStack(material, 1);
 		}
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(LAPI.getAPI().getString("Commands.Lang.GUI.Items."+ID+".Name", LAPI.getInstance(), player));
-		meta.setLore(LAPI.getAPI().getStringList("Commands.Lang.GUI.Items."+ID+".Lore", LAPI.getInstance(), player));
+		meta.setDisplayName(LangAPI.getInstance().getString("Commands.Lang.GUI.Items."+ID+".Name", LAPI.getInstance(), player));
+		meta.setLore(LangAPI.getInstance().getStringList("Commands.Lang.GUI.Items."+ID+".Lore", LAPI.getInstance(), player));
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -128,7 +129,7 @@ public class LangGUI implements Listener {
 	@EventHandler
 	private void onClick(InventoryClickEvent e) {
 		if(e.getClickedInventory() != null) {
-			LangPlayer p = LAPI.getAPI().getPlayer(e.getWhoClicked());
+			LangPlayer p = LangAPI.getInstance().getPlayer(e.getWhoClicked());
 			if(onMenu.contains(p.getName())) {
 				e.setCancelled(true);
 				for(String ID : getItems()) {
