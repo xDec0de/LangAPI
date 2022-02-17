@@ -21,7 +21,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import es.xdec0de.langapi.LAPI;
 import es.xdec0de.langapi.api.events.LanguageChangeEvent;
 import es.xdec0de.langapi.api.utils.Utf8YamlConfiguration;
 import es.xdec0de.langapi.utils.files.FileUtils;
@@ -977,21 +976,6 @@ public class LangAPI extends FileUtils {
 		List<Lang> allowed = new ArrayList<Lang>();
 		LAPI.getFiles().getConfig().getStringList(LAPISetting.LANGS_USING).stream().forEach(lang -> allowed.add(Lang.valueOf(lang)));
 		return allowed;
-	}
-
-	/**
-	 * Sends the settings cache to the database, should not be called manually unless you know what you are doing.
-	 * 
-	 * @param async
-	 * Whether the void is executed asynchronously or not.
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public void sendCacheToDatabase(boolean async) {
-		if(async)
-			Bukkit.getScheduler().runTaskAsynchronously(LAPI.getInstance(), () -> { SettingsHandler.sendCacheToDatabase(); });
-		else
-			SettingsHandler.sendCacheToDatabase();
 	}
 
 	/**

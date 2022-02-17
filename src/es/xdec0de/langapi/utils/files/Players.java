@@ -5,7 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import es.xdec0de.langapi.LAPI;
+
+import es.xdec0de.langapi.api.LAPI;
 
 public class Players {
 

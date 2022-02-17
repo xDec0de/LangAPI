@@ -3,7 +3,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import es.xdec0de.langapi.LAPI;
+import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
 import net.md_5.bungee.api.ChatColor;
 

@@ -1,4 +1,4 @@
-package es.xdec0de.langapi;
+package es.xdec0de.langapi.api;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,8 +9,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import es.xdec0de.langapi.api.LangAPI;
-import es.xdec0de.langapi.api.SettingsHandler;
+import es.xdec0de.langapi.ProtocolChecker;
 import es.xdec0de.langapi.api.gui.LangGUI;
 import es.xdec0de.langapi.cmd.LangCMD;
 import es.xdec0de.langapi.utils.LAPIMessageUtils;
@@ -55,9 +54,7 @@ public class LAPI extends JavaPlugin {
 		msgUtils.log(" ");
 		msgUtils.logCol("&8|------------------------------------------>");
 		msgUtils.log(" ");
-		if(connection != null) {
-			api.sendCacheToDatabase(false);
-		}
+		DataHandler.getInstance().saveAll();
 	}
 
 	private void executeEnable() {
@@ -72,13 +69,14 @@ public class LAPI extends JavaPlugin {
 		msgUtils = new LAPIMessageUtils();
 		LangAPI tempAPI = new LangAPI();
 		api = tempAPI;
-		startCacheToDatabaseTask();
 		api.createFiles(instance);
 		api.updateFiles(instance, ignoredMessages());
 		getCommand("lang").setExecutor(new LangCMD());
-		getServer().getPluginManager().registerEvents(new SettingsHandler(), this);
+		getServer().getPluginManager().registerEvents(DataHandler.getInstance(), this);
 		getServer().getPluginManager().registerEvents(new LangGUI(), this);
 		//getServer().getPluginManager().registerEvents(updater = new UpdateChecker(), this);
+		int dbDelay = files.getConfig().getInt(LAPISetting.MYSQL_CACHE_TIME) * 20;
+		Bukkit.getScheduler().runTaskTimerAsynchronously(getPlugin(LAPI.class), () -> DataHandler.getInstance().saveAll(), dbDelay, dbDelay);
 	}
 
 	private List<String> ignoredMessages() {
@@ -123,7 +121,6 @@ public class LAPI extends JavaPlugin {
 					PreparedStatement statement = (PreparedStatement)connection.prepareStatement("CREATE TABLE IF NOT EXISTS `" + files.getConfig().getString(LAPISetting.MYSQL_DATABASE) + "`.`" + files.getConfig().getString(LAPISetting.MYSQL_TABLE) + "` ( `UUID` VARCHAR(255) NOT NULL , `Lang` TEXT NOT NULL , `AutoSelect` TINYINT NOT NULL, CONSTRAINT PK_UUID PRIMARY KEY (UUID)) ENGINE = "+files.getConfig().getString(LAPISetting.MYSQL_ENGINE)+";");
 					statement.execute();
 					statement.close();
-					startCacheToDatabaseTask();
 				}
 				return true;
 			} catch (SQLException | ClassNotFoundException e) {
@@ -131,15 +128,6 @@ public class LAPI extends JavaPlugin {
 				return false;
 			}
 		}
-	}
-
-	private void startCacheToDatabaseTask() {
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Runnable() {
-			@Override
-			public void run() {
-				api.sendCacheToDatabase(true);
-			}
-		}, 0L, files.getConfig().getInt(LAPISetting.MYSQL_CACHE_TIME) * 20);
 	}
 
 	private void MySQLError(Exception e) {

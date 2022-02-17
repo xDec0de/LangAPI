@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import es.xdec0de.langapi.LAPI;
+import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
 import es.xdec0de.langapi.utils.files.enums.LAPISetting;
 import net.md_5.bungee.api.ChatColor;

@@ -5,7 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import es.xdec0de.langapi.LAPI;
+
+import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.api.Lang;
 import es.xdec0de.langapi.api.gui.LangGUI;
 import es.xdec0de.langapi.utils.files.Config;

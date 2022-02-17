@@ -13,7 +13,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import es.xdec0de.langapi.LAPI;
+
+import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.api.Lang;
 import es.xdec0de.langapi.utils.HeadDatabase;
 import es.xdec0de.langapi.utils.files.enums.LAPIMsg;

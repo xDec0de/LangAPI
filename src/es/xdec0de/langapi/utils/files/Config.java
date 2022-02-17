@@ -7,7 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-import es.xdec0de.langapi.LAPI;
+
+import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.api.utils.Utf8YamlConfiguration;
 import es.xdec0de.langapi.utils.files.enums.LAPISetting;
 
