@@ -1,12 +1,8 @@
 package es.xdec0de.langapi.api;
 import java.io.File;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -21,10 +17,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import es.xdec0de.langapi.api.events.LanguageChangeEvent;
 import es.xdec0de.langapi.api.utils.Utf8YamlConfiguration;
 import es.xdec0de.langapi.utils.files.FileUtils;
-import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
 import es.xdec0de.langapi.utils.files.enums.LAPISetting;
 
 
@@ -38,17 +32,13 @@ import es.xdec0de.langapi.utils.files.enums.LAPISetting;
  * @since LangAPI v1.0
  */
 public class LangAPI extends FileUtils {
-	
-	static HashMap<UUID, Settings> settingsCache = new HashMap<UUID, Settings>();
-	
+
 	public LangAPI() throws SecurityException {
+		// TODO remove
 		if(LAPI.getAPI() != null) {
 			Bukkit.getServer().getPluginManager().disablePlugin(LAPI.getInstance());
 			throw new SecurityException("A LangAPI object has been manually created when LAPI.getAPI() is not null.");
-		} else
-			if(!Bukkit.getOnlinePlayers().isEmpty())
-				for(Player p : Bukkit.getOnlinePlayers())
-					LangAPI.settingsCache.put(p.getUniqueId(), getSettings(p.getUniqueId()));
+		}
 	}
 	
 	private String applyColor(String message) {
@@ -332,8 +322,8 @@ public class LangAPI extends FileUtils {
 	 * 
 	 * @since LangAPI v1.0
 	 */
-	public File getFile(Plugin plugin, Player player) {
-		return new File(plugin.getDataFolder(), "lang/"+getLanguage(player).name()+".yml");
+	public File getFile(Plugin plugin, LangPlayer player) {
+		return new File(plugin.getDataFolder(), "lang/"+player.getLang().name()+".yml");
 	}
 
 	/**
@@ -723,32 +713,6 @@ public class LangAPI extends FileUtils {
 	}
 
 	/**
-	 * Checks if a path exists on the language file the {@link Player} has selected.
-	 * 
-	 * @param path
-	 * The path that will be checked, you can use the paths of lang/default.yml, as mentioned on {@link #createFiles(Plugin)}, predefined files must have the same paths that
-	 * the default file.
-	 * 
-	 * @param plugin
-	 * Instance of the plugin that LangAPI will get the file from.
-	 * 
-	 * @param sender
-	 * The sender that LangAPI will get the language from, if the sender is not a player, the default language will be used.
-	 * 
-	 * @return
-	 * A colored List<String> depending on sender's language.
-	 * 
-	 * @see #getUncoloredStringList(String, Plugin, CommandSender)
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public boolean contains(String path, Plugin plugin, Player player) {
-		Lang lang = getLanguage(player);
-		Configuration file = Utf8YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "lang/"+lang.name()+".yml"));
-		return file.contains(path);
-	}
-
-	/**
 	 * Checks if a path exists on the language file the {@link CommandSender} has selected, server's default language file will be used if the {@link CommandSender} is not a {@link Player}.
 	 * 
 	 * @param path
@@ -758,8 +722,8 @@ public class LangAPI extends FileUtils {
 	 * @param plugin
 	 * Instance of the plugin that LangAPI will get the file from.
 	 * 
-	 * @param sender
-	 * The sender that LangAPI will get the language from, if the sender is not a player, the default language will be used.
+	 * @param player
+	 * The player that LangAPI will get the language from.
 	 * 
 	 * @return
 	 * A colored List<String> depending on sender's language.
@@ -768,156 +732,9 @@ public class LangAPI extends FileUtils {
 	 * 
 	 * @since LangAPI v1.0
 	 */
-	public boolean contains(String path, Plugin plugin, CommandSender sender) {
-		Lang lang = getLanguage(sender);
-		Configuration file = Utf8YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "lang/"+lang.name()+".yml"));
+	public boolean contains(String path, Plugin plugin, LangPlayer player) {
+		Configuration file = Utf8YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "lang/"+player.getLang().name()+".yml"));
 		return file.contains(path);
-	}
-
-	/**
-	 * Changes the language of a player.
-	 * 
-	 * @param uuid
-	 * The uuid of the player that will have its language changed.
-	 * 
-	 * @param language
-	 * The language the player will be using.
-	 * 
-	 * @param sendMessage
-	 * Whether this method should send a message to the player indicating that it's language has been changed or not.
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public void setLanguage(UUID uuid, Lang language, boolean sendMessage) {
-		if(!getLanguage(uuid).equals(language) && isAllowed(language)) {
-			Lang lang = getReplacement(language);
-			LanguageChangeEvent lce = new LanguageChangeEvent(Bukkit.getPlayer(uuid), language);
-			Bukkit.getPluginManager().callEvent(lce);
-			if(!lce.isCancelled()) {
-				getSettings(uuid).setLang(language);
-				if(sendMessage)
-					LAPI.getMessages().send(Bukkit.getPlayer(uuid), LAPIMsg.LANG_CHANGED, new String[]{"%lang%", lang.name().toLowerCase()});
-			}
-		}
-	}
-
-	/**
-	 * Changes the language of a player.
-	 * 
-	 * @param player
-	 * The player that will have its language changed.
-	 * 
-	 * @param language
-	 * The language the player will be using.
-	 * 
-	 * @param sendMessage
-	 * Whether this method should send a message to the player indicating that it's language has been changed or not.
-	 * 
-	 * @see #setLanguage(UUID, Lang, boolean)
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public void setLanguage(Player player, Lang language, boolean sendMessage) {
-		setLanguage(player.getUniqueId(), language, sendMessage);
-	}
-
-	/**
-	 * Changes the language of a player.
-	 * 
-	 * @param sender
-	 * The sender that will have its language changed, sender must be a player.
-	 * 
-	 * @param language
-	 * The language the player will be using.
-	 * 
-	 * @param sendMessage
-	 * Whether this method should send a message to the player indicating that it's language has been changed or not.
-	 * 
-	 * @throws IllegalArgumentException if the sender is not a player.
-	 * 
-	 * @see #setLanguage(UUID, Lang, boolean)
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public void setLanguage(CommandSender sender, Lang language, boolean sendMessage) throws IllegalArgumentException {
-		if(!(sender instanceof Player))
-			throw new IllegalArgumentException("Sender must be a player!");
-		setLanguage((Player)sender, language, sendMessage);
-	}
-
-	/**
-	 * Gets the <strong>{@link Lang}</strong> that a player has selected.
-	 * 
-	 * @param uuid
-	 * The uuid of the {@link Player} that will be checked.
-	 * 
-	 * @return
-	 * {@link Player}'s {@link Lang}.
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public Lang getLanguage(UUID uuid) {
-		return getSettings(uuid).getLang();
-	}
-
-	/**
-	 * Gets the <strong>language</strong> that a player has selected.
-	 * 
-	 * @param player
-	 * The player that will be checked.
-	 * 
-	 * @return
-	 * player's language.
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public Lang getLanguage(Player player) {
-		return getSettings(player.getUniqueId()).getLang();
-	}
-
-	/**
-	 * Gets the <strong>language</strong> that a sender has selected.
-	 * 
-	 * @param sender
-	 * The sender that will be checked.
-	 * 
-	 * @return
-	 * sender's language or default language if the sender is not a player.
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public Lang getLanguage(CommandSender sender) {
-		return sender instanceof Player ? getLanguage((Player)sender) : getDefaultLanguage();
-	}
-
-	/**
-	 * Sets if a player will automatically change its language depending on its Minecraft settings or not. AutoSelect only works with ProtocolLib.
-	 * 
-	 * @param uuid
-	 * The uuid of the player that will have the AutoSelect setting changed.
-	 * 
-	 * @param autoSelect
-	 * Whether AutoSelect is enabled for this player or not.
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public void setAutoSelect(UUID uuid, boolean autoSelect) {
-		getSettings(uuid).setAutoSelect(autoSelect);
-	}
-
-	/**
-	 * Gets whether a player has AutoSelect enabled or not.
-	 * 
-	 * @param uuid
-	 * The uuid of the player that will be checked.
-	 * 
-	 * @return
-	 * true if enabled, false otherwise.
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public boolean getAutoSelect(UUID uuid) {
-		return getSettings(uuid).getAutoSelect();
 	}
 
 	/**
@@ -978,44 +795,28 @@ public class LangAPI extends FileUtils {
 		return allowed;
 	}
 
-	/**
-	 * Gets the setting of a player, even if it's online or not, getting offline player data will make a request to the database every time you get them, on online players, cache will be used.
-	 * 
-	 * @param uuid
-	 * The uuid of the player.
-	 * 
-	 * @return
-	 * A Settings object of the player.
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public Settings getSettings(UUID uuid) {
-		return settingsCache.containsKey(uuid) ? settingsCache.get(uuid) : getDatabaseSettings(uuid);
+	public List<LangPlayer> getOnlinePlayers() {
+		return DataHandler.getInstance().getOnlinePlayers();
 	}
 
-	private Settings getDatabaseSettings(UUID uuid) {
-		if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.MYSQL_ENABLED)) {
-			try {
-				PreparedStatement statement = (PreparedStatement)LAPI.getMySQLConnection().prepareStatement("SELECT * FROM " + LAPI.getFiles().getConfig().getString(LAPISetting.MYSQL_TABLE) + " WHERE UUID=?");
-				statement.setString(1, uuid.toString());
-				ResultSet results = statement.executeQuery();
-				if(results.next()) {
-					Lang lang = Lang.valueOf(results.getString("Lang"));
-					boolean autoSelect = results.getBoolean("AutoSelect");
-					statement.close();
-					results.close();
-					return new Settings(uuid, lang, autoSelect);
-				}
-				return new Settings(uuid, getDefaultLanguage(), LAPI.getFiles().getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED));
-			} catch(SQLException ex) {
-				ex.printStackTrace();
-			}
-		} else {
-			if(LAPI.getFiles().getConfig().get().contains(uuid.toString())) {
-				return new Settings(uuid, Lang.valueOf(LAPI.getFiles().getPlayers().get().getString(uuid.toString()+".Lang")), LAPI.getFiles().getPlayers().get().getBoolean(uuid.toString()+".AutoSelect"));
-			}
-			return new Settings(uuid, getDefaultLanguage(), LAPI.getFiles().getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED));
-		}
-		return null;
+	public LangPlayer getPlayer(UUID uuid) {
+		return DataHandler.getInstance().getPlayer(uuid);
+	}
+
+	public LangPlayer getPlayer(Player player) {
+		return DataHandler.getInstance().getPlayer(player.getUniqueId());
+	}
+
+	public LangPlayer getPlayer(CommandSender sender) {
+		return sender instanceof Player ? DataHandler.getInstance().getPlayer(((Player)sender).getUniqueId()) : null;
+	}
+
+	public LangPlayer getPlayer(String name) {
+		return DataHandler.getInstance().getPlayer(name);
+	}
+
+
+	public LangOfflinePlayer getOfflinePlayer(UUID uuid) {
+		return DataHandler.getInstance().getOfflinePlayer(uuid);
 	}
 }

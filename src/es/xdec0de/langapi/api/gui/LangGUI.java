@@ -2,6 +2,7 @@ package es.xdec0de.langapi.api.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.api.Lang;
+import es.xdec0de.langapi.api.LangPlayer;
 import es.xdec0de.langapi.utils.HeadDatabase;
 import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
 import es.xdec0de.langapi.utils.files.enums.LAPISetting;
@@ -126,17 +128,16 @@ public class LangGUI implements Listener {
 	@EventHandler
 	private void onClick(InventoryClickEvent e) {
 		if(e.getClickedInventory() != null) {
-			Player p = (Player)e.getWhoClicked();
+			LangPlayer p = LAPI.getAPI().getPlayer(e.getWhoClicked());
 			if(onMenu.contains(p.getName())) {
 				e.setCancelled(true);
 				for(String ID : getItems()) {
 					if(e.getSlot() == LAPI.getFiles().getConfig().get().getInt("Commands.Lang.GUI.Items."+ID+".Slot")) {
 						Lang lang = Lang.valueOf(LAPI.getFiles().getConfig().get().getString("Commands.Lang.GUI.Items."+ID+".Lang"));
-						LAPI.getAPI().setLanguage(p.getUniqueId(), lang, true);
-						if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.DISABLE_AUTOSELECT) && LAPI.getAPI().getAutoSelect(p.getUniqueId())) {
-							LAPI.getAPI().setAutoSelect(p.getUniqueId(), false);
-						}
-						p.closeInventory();
+						p.setLang(lang);
+						if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.DISABLE_AUTOSELECT) && p.hasAutoSelect())
+							p.setAutoSelect(false);
+						p.bukkit().closeInventory();
 						return;
 					}
 				}

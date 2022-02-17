@@ -6,12 +6,13 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import es.xdec0de.langapi.utils.files.enums.LAPISetting;
 
 public class LangOfflinePlayer {
 
-	private final UUID uuid;
+	final UUID uuid;
 	private Lang lang;
 	private boolean autoSelect;
 
@@ -27,6 +28,14 @@ public class LangOfflinePlayer {
 
 	public UUID getUUID() {
 		return uuid;
+	}
+
+	public OfflinePlayer bukkit() {
+		return Bukkit.getOfflinePlayer(uuid);
+	}
+
+	public String getName() {
+		return bukkit().getName();
 	}
 
 	public Lang getLang() {
