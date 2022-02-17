@@ -123,13 +123,13 @@ public class LangAPI extends FileUtils {
 			}
 		}
 	}
-	
+
 	/*
 	 * 
 	 * File updaters
 	 * 
 	 */
-	
+
 	/**
 	 * This method will add all missing values to every language file selected on the server and the default language file, its important that the plugin has 
 	 * a <strong>"lang/default.yml" file</strong>, otherwise, files won't be updated, also, files should be created first with <strong>{@link #createFiles(Plugin)}</strong>
@@ -209,13 +209,13 @@ public class LangAPI extends FileUtils {
 			}
 		}
 	}
-	
+
 	/*
 	 * 
 	 * File reloader
 	 * 
 	 */
-	
+
 	/**
 	 * This method will reload all the language files selected on the server, files must exist for this to work ({@link #createFiles(Plugin)}).
 	 * 
@@ -238,7 +238,7 @@ public class LangAPI extends FileUtils {
 			}
 		}
 	}
-	
+
 	/*
 	 * 
 	 * File getters
@@ -263,7 +263,7 @@ public class LangAPI extends FileUtils {
 		getLanguagesAllowed().stream().forEach(lang -> files.add(new File(plugin.getDataFolder(), "lang/"+lang.name()+".yml")));
 		return files;
 	}
-	
+
 	/**
 	 * Returns all the language files selected on the server as a {@link FileConfiguration} list.
 	 * 
@@ -282,7 +282,7 @@ public class LangAPI extends FileUtils {
 		getFiles(plugin).stream().forEach(file -> files.add(Utf8YamlConfiguration.loadConfiguration(file)));
 		return files;
 	}
-	
+
 	/**
 	 * Returns the language file of the selected {@link Lang} if if {@link #isAllowed(Lang)} returns true.
 	 * 
@@ -300,7 +300,7 @@ public class LangAPI extends FileUtils {
 	public File getFile(Plugin plugin, Lang lang) {
 		return isAllowed(lang) ? new File(plugin.getDataFolder(), "lang/"+getReplacement(lang).name()+".yml") : null;
 	}
-	
+
 	/**
 	 * Returns the {@link FileConfiguration} of the selected {@link Lang} if {@link #isAllowed(Lang)} returns true.
 	 * 
@@ -318,7 +318,7 @@ public class LangAPI extends FileUtils {
 	public FileConfiguration getConfFile(Plugin plugin, Lang lang) {
 		return isAllowed(lang) ? Utf8YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "lang/"+getReplacement(lang).name()+".yml")) : null;
 	}
-	
+
 	/**
 	 * Returns the language file of the selected {@link Player}.
 	 * 
@@ -336,7 +336,7 @@ public class LangAPI extends FileUtils {
 	public File getFile(Plugin plugin, Player player) {
 		return new File(plugin.getDataFolder(), "lang/"+getLanguage(player).name()+".yml");
 	}
-	
+
 	/**
 	 * Returns a {@link FileConfiguration} loaded by {@link Utf8YamlConfiguration} that corresponds to the specified {@link Player}.
 	 * 
@@ -354,7 +354,7 @@ public class LangAPI extends FileUtils {
 	public FileConfiguration getConfFile(Plugin plugin, Player player) {
 		return Utf8YamlConfiguration.loadConfiguration(getFile(plugin, player));
 	}
-	
+
 	/**
 	 * Returns the language file of the selected {@link CommandSender}, server's default language file will be returned if the {@link CommandSender} is not a {@link Player}.
 	 * 
@@ -372,7 +372,7 @@ public class LangAPI extends FileUtils {
 	public File getFile(Plugin plugin, CommandSender sender) {
 		return sender instanceof Player ? getFile(plugin, (Player)sender) : getDefaultFile(plugin);
 	}
-	
+
 	/**
 	 * Returns a {@link FileConfiguration} loaded by {@link Utf8YamlConfiguration} of {@link CommandSender}'s language, server's default language file will be returned if the {@link CommandSender} is not a {@link Player}.
 	 * 
@@ -390,7 +390,7 @@ public class LangAPI extends FileUtils {
 	public FileConfiguration getConfFile(Plugin plugin, CommandSender sender) {
 		return Utf8YamlConfiguration.loadConfiguration(getFile(plugin, sender));
 	}
-	
+
 	/**
 	 * Returns the default language file selected on the server.
 	 * 
@@ -405,7 +405,7 @@ public class LangAPI extends FileUtils {
 	public File getDefaultFile(Plugin plugin) {
 		return new File(plugin.getDataFolder(), "lang/"+getDefaultLanguage().name()+".yml");
 	}
-	
+
 	/**
 	 * Returns the default language file selected on the server as a {@link FileConfiguration} loaded by {@link Utf8YamlConfiguration}.
 	 * 
@@ -420,13 +420,13 @@ public class LangAPI extends FileUtils {
 	public FileConfiguration getDefaultConfFile(Plugin plugin) {
 		return Utf8YamlConfiguration.loadConfiguration(getDefaultFile(plugin));
 	}
-	
+
 	/*
 	 * 
 	 * String getters
 	 * 
 	 */
-	
+
 	/**
 	 * Gets the <strong>uncolored {@link String}</strong> on the language the player has selected
 	 * 
@@ -450,7 +450,7 @@ public class LangAPI extends FileUtils {
 	public String getUncoloredString(String path, Plugin plugin, Player player) {
 		return getConfFile(plugin, player).getString(path);
 	}
-	
+
 	/**
 	 * Gets the <strong>colored string</strong> on the language the player has selected.
 	 * 
@@ -474,8 +474,7 @@ public class LangAPI extends FileUtils {
 	public String getString(String path, Plugin plugin, Player player) {
 		return applyColor(getUncoloredString(path, plugin, player));
 	}
-	
-	
+
 	/**
 	 * Gets the uncolored string on the language the {@link CommandSender} has selected, server's default language file will be used if the {@link CommandSender} is not a {@link Player}.
 	 * 
@@ -499,8 +498,7 @@ public class LangAPI extends FileUtils {
 	public String getUncoloredString(String path, Plugin plugin, CommandSender sender) {
 		return getConfFile(plugin, sender).getString(path);
 	}
-	
-	
+
 	/**
 	 * Gets the colored string on the language the {@link CommandSender} has selected, server's default language file will be used if the {@link CommandSender} is not a {@link Player}.
 	 * 
@@ -524,7 +522,7 @@ public class LangAPI extends FileUtils {
 	public String getString(String path, Plugin plugin, CommandSender sender) {
 		return applyColor(getUncoloredString(path, plugin, sender));
 	}
-	
+
 	/**
 	 * Gets the uncolored string list on the language the {@link Player} has selected.
 	 * 
@@ -548,7 +546,7 @@ public class LangAPI extends FileUtils {
 	public List<String> getUncoloredStringList(String path, Plugin plugin, Player player) {
 		return getConfFile(plugin, player).getStringList(path);
 	}
-	
+
 	/**
 	 * Gets the colored string list on the language the {@link Player} has selected.
 	 * 
@@ -576,7 +574,7 @@ public class LangAPI extends FileUtils {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Gets the uncolored string list on the language the {@link CommandSender} has selected, server's default language file will be used if the {@link CommandSender} is not a {@link Player}.
 	 * 
@@ -600,8 +598,7 @@ public class LangAPI extends FileUtils {
 	public List<String> getUncoloredStringList(String path, Plugin plugin, CommandSender sender) {
 		return getConfFile(plugin, sender).getStringList(path);
 	}
-	
-	
+
 	/**
 	 * Gets the colored string list on the language the {@link CommandSender} has selected, server's default language file will be used if the {@link CommandSender} is not a {@link Player}.
 	 * 
@@ -629,7 +626,7 @@ public class LangAPI extends FileUtils {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Gets the <strong>boolean</strong> from the specified <strong>path</strong> on the language the {@link Player} has selected.
 	 * 
@@ -653,7 +650,7 @@ public class LangAPI extends FileUtils {
 	public boolean getBoolean(String path, Plugin plugin, Player player) {
 		return getConfFile(plugin, player).getBoolean(path);
 	}
-	
+
 	/**
 	 * Gets the <strong>boolean</strong> from the specified <strong>path</strong> on the language the {@link CommandSender} has selected, server's default language file will be used if the {@link CommandSender} is not a {@link Player}.
 	 * 
@@ -677,7 +674,7 @@ public class LangAPI extends FileUtils {
 	public boolean getBoolean(String path, Plugin plugin, CommandSender sender) {
 		return sender instanceof Player ? getBoolean(path, plugin, (Player)sender) : getDefaultConfFile(plugin).getBoolean(path);
 	}
-	
+
 	/**
 	 * Gets the <strong>int</strong> from the specified <strong>path</strong> on the language the {@link Player} has selected.
 	 * 
@@ -701,7 +698,7 @@ public class LangAPI extends FileUtils {
 	public int getInt(String path, Plugin plugin, Player player) {
 		return getConfFile(plugin, player).getInt(path);
 	}
-	
+
 	/**
 	 * Gets the <strong>int</strong> from the specified <strong>path</strong> on the language the {@link CommandSender} has selected, server's default language file will be used if the {@link CommandSender} is not a {@link Player}.
 	 * 
@@ -725,7 +722,7 @@ public class LangAPI extends FileUtils {
 	public int getInt(String path, Plugin plugin, CommandSender sender) {
 		return sender instanceof Player ? getInt(path, plugin, (Player)sender) : getDefaultConfFile(plugin).getInt(path);
 	}
-	
+
 	/**
 	 * Checks if a path exists on the language file the {@link Player} has selected.
 	 * 
@@ -751,7 +748,7 @@ public class LangAPI extends FileUtils {
 		Configuration file = Utf8YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "lang/"+lang.name()+".yml"));
 		return file.contains(path);
 	}
-	
+
 	/**
 	 * Checks if a path exists on the language file the {@link CommandSender} has selected, server's default language file will be used if the {@link CommandSender} is not a {@link Player}.
 	 * 
@@ -777,7 +774,7 @@ public class LangAPI extends FileUtils {
 		Configuration file = Utf8YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "lang/"+lang.name()+".yml"));
 		return file.contains(path);
 	}
-	
+
 	/**
 	 * Changes the language of a player.
 	 * 
@@ -804,7 +801,7 @@ public class LangAPI extends FileUtils {
 			}
 		}
 	}
-	
+
 	/**
 	 * Changes the language of a player.
 	 * 
@@ -824,7 +821,7 @@ public class LangAPI extends FileUtils {
 	public void setLanguage(Player player, Lang language, boolean sendMessage) {
 		setLanguage(player.getUniqueId(), language, sendMessage);
 	}
-	
+
 	/**
 	 * Changes the language of a player.
 	 * 
@@ -848,7 +845,7 @@ public class LangAPI extends FileUtils {
 			throw new IllegalArgumentException("Sender must be a player!");
 		setLanguage((Player)sender, language, sendMessage);
 	}
-	
+
 	/**
 	 * Gets the <strong>{@link Lang}</strong> that a player has selected.
 	 * 
@@ -863,7 +860,7 @@ public class LangAPI extends FileUtils {
 	public Lang getLanguage(UUID uuid) {
 		return getSettings(uuid).getLang();
 	}
-	
+
 	/**
 	 * Gets the <strong>language</strong> that a player has selected.
 	 * 
@@ -878,7 +875,7 @@ public class LangAPI extends FileUtils {
 	public Lang getLanguage(Player player) {
 		return getSettings(player.getUniqueId()).getLang();
 	}
-	
+
 	/**
 	 * Gets the <strong>language</strong> that a sender has selected.
 	 * 
@@ -893,7 +890,7 @@ public class LangAPI extends FileUtils {
 	public Lang getLanguage(CommandSender sender) {
 		return sender instanceof Player ? getLanguage((Player)sender) : getDefaultLanguage();
 	}
-	
+
 	/**
 	 * Sets if a player will automatically change its language depending on its Minecraft settings or not. AutoSelect only works with ProtocolLib.
 	 * 
@@ -908,7 +905,7 @@ public class LangAPI extends FileUtils {
 	public void setAutoSelect(UUID uuid, boolean autoSelect) {
 		getSettings(uuid).setAutoSelect(autoSelect);
 	}
-	
+
 	/**
 	 * Gets whether a player has AutoSelect enabled or not.
 	 * 
@@ -923,7 +920,7 @@ public class LangAPI extends FileUtils {
 	public boolean getAutoSelect(UUID uuid) {
 		return getSettings(uuid).getAutoSelect();
 	}
-	
+
 	/**
 	 * Gets server's default language, this is defined on LangAPI's config.yml.
 	 * 
@@ -932,7 +929,7 @@ public class LangAPI extends FileUtils {
 	public Lang getDefaultLanguage() {
 		return Lang.valueOf(LAPI.getFiles().getConfig().getString(LAPISetting.DEFAULT_LANG));
 	}
-	
+
 	/**
 	 * Gets the replacement of a language, this is defined on LangAPI's config.yml.
 	 * 
@@ -950,7 +947,7 @@ public class LangAPI extends FileUtils {
 				return Lang.valueOf(LAPI.getFiles().getConfig().get().getString("Replace.Langs."+language.name()));
 		return language;
 	}
-	
+
 	/**
 	 * Gets whether a language is allowed or not on the server, this is defined on LangAPI's config.yml.
 	 * 
@@ -965,7 +962,7 @@ public class LangAPI extends FileUtils {
 	public boolean isAllowed(Lang language) {
 		return LAPI.getFiles().getConfig().getBoolean(LAPISetting.ALL_LANGUAGES_ENABLED) ? true : getLanguagesAllowed().contains(language);
 	}
-	
+
 	/**
 	 * Gets the languages allowed, this is defined on LangAPI's config.yml.
 	 * 
@@ -981,7 +978,7 @@ public class LangAPI extends FileUtils {
 		LAPI.getFiles().getConfig().getStringList(LAPISetting.LANGS_USING).stream().forEach(lang -> allowed.add(Lang.valueOf(lang)));
 		return allowed;
 	}
-	
+
 	/**
 	 * Sends the settings cache to the database, should not be called manually unless you know what you are doing.
 	 * 
@@ -996,7 +993,7 @@ public class LangAPI extends FileUtils {
 		else
 			SettingsHandler.sendCacheToDatabase();
 	}
-	
+
 	/**
 	 * Gets the setting of a player, even if it's online or not, getting offline player data will make a request to the database every time you get them, on online players, cache will be used.
 	 * 
@@ -1011,30 +1008,30 @@ public class LangAPI extends FileUtils {
 	public Settings getSettings(UUID uuid) {
 		return settingsCache.containsKey(uuid) ? settingsCache.get(uuid) : getDatabaseSettings(uuid);
 	}
-	
+
 	private Settings getDatabaseSettings(UUID uuid) {
-    	if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.MYSQL_ENABLED)) {
+		if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.MYSQL_ENABLED)) {
 			try {
 				PreparedStatement statement = (PreparedStatement)LAPI.getMySQLConnection().prepareStatement("SELECT * FROM " + LAPI.getFiles().getConfig().getString(LAPISetting.MYSQL_TABLE) + " WHERE UUID=?");
-			    statement.setString(1, uuid.toString());
-			    ResultSet results = statement.executeQuery();
-			    if(results.next()) {
-				    Lang lang = Lang.valueOf(results.getString("Lang"));
-				    boolean autoSelect = results.getBoolean("AutoSelect");
-				    statement.close();
-				    results.close();
-				    return new Settings(uuid, lang, autoSelect);
-			    }
-			    return new Settings(uuid, getDefaultLanguage(), LAPI.getFiles().getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED));
+				statement.setString(1, uuid.toString());
+				ResultSet results = statement.executeQuery();
+				if(results.next()) {
+					Lang lang = Lang.valueOf(results.getString("Lang"));
+					boolean autoSelect = results.getBoolean("AutoSelect");
+					statement.close();
+					results.close();
+					return new Settings(uuid, lang, autoSelect);
+				}
+				return new Settings(uuid, getDefaultLanguage(), LAPI.getFiles().getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED));
 			} catch(SQLException ex) {
 				ex.printStackTrace();
 			}
-    	} else {
-    		if(LAPI.getFiles().getConfig().get().contains(uuid.toString())) {
-    			return new Settings(uuid, Lang.valueOf(LAPI.getFiles().getPlayers().get().getString(uuid.toString()+".Lang")), LAPI.getFiles().getPlayers().get().getBoolean(uuid.toString()+".AutoSelect"));
-    		}
-    		return new Settings(uuid, getDefaultLanguage(), LAPI.getFiles().getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED));
-    	}
-    	return null;
+		} else {
+			if(LAPI.getFiles().getConfig().get().contains(uuid.toString())) {
+				return new Settings(uuid, Lang.valueOf(LAPI.getFiles().getPlayers().get().getString(uuid.toString()+".Lang")), LAPI.getFiles().getPlayers().get().getBoolean(uuid.toString()+".AutoSelect"));
+			}
+			return new Settings(uuid, getDefaultLanguage(), LAPI.getFiles().getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED));
+		}
+		return null;
 	}
 }

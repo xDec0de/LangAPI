@@ -7,11 +7,11 @@ import java.util.UUID;
  * @since LangAPI v1.0
  */
 public class Settings {
-	
+
 	private final UUID uuid;
 	private Lang lang;
 	private boolean autoSelect;
-	
+
 	/**
 	 * Creates a new {@link Settings} object. This should not be used unless you want to overwrite offline players data.
 	 * 
@@ -38,7 +38,7 @@ public class Settings {
 			throw new IllegalArgumentException("A Settings object with that UUID already exists. Do not create Settings objects of online players manually! Use LAPI.getAPI().getSettings(UUID) instead!");
 		}
 	}
-	
+
 	/**
 	 * Gets the {@link UUID} of the player that owns a {@link Settings} object.
 	 * 
@@ -50,7 +50,7 @@ public class Settings {
 	public UUID getUUID() {
 		return uuid;
 	}
-	
+
 	/**
 	 * Gets the {@link Lang} of a {@link Settings} object.
 	 * 
@@ -65,7 +65,7 @@ public class Settings {
 	public Lang getLang() {
 		return lang;
 	}
-	
+
 	/**
 	 * Changes the {@link Lang} of a {@link Settings} object.
 	 * 
@@ -77,7 +77,7 @@ public class Settings {
 	public void setLang(Lang lang) {
 		this.lang = lang;
 	}
-	
+
 	/**
 	 * Gets if AutoSelect is enabled on a {@link Settings} object.
 	 * 
@@ -92,7 +92,7 @@ public class Settings {
 	public boolean getAutoSelect() {
 		return autoSelect;
 	}
-	
+
 	/**
 	 * Changes if AutoSelect is enabled on a {@link Settings} object.
 	 * 

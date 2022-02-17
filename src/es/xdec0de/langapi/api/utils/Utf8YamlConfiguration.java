@@ -29,20 +29,20 @@ public class Utf8YamlConfiguration extends YamlConfiguration {
 	 * 
 	 * @since LangAPI v1.0
 	 */
-    @Override
-    public void save(File file) throws IOException {
-        Validate.notNull(file, "File cannot be null");
-        Files.createParentDirs(file);
-        String data = this.saveToString();
-        Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
-        try {
-            writer.write(data);
-        } finally {
-            writer.close();
-        }
-    }
-    
-    /**
+	@Override
+	public void save(File file) throws IOException {
+		Validate.notNull(file, "File cannot be null");
+		Files.createParentDirs(file);
+		String data = this.saveToString();
+		Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+		try {
+			writer.write(data);
+		} finally {
+			writer.close();
+		}
+	}
+
+	/**
 	 * Loads a file with utf-8 encoding.
 	 * 
 	 * @param file
@@ -50,9 +50,9 @@ public class Utf8YamlConfiguration extends YamlConfiguration {
 	 * 
 	 * @since LangAPI v1.0
 	 */
-    @Override
-    public void load(File file) throws FileNotFoundException, IOException, InvalidConfigurationException {
-        Validate.notNull(file, "File cannot be null");
-        this.load(new InputStreamReader(new FileInputStream(file), Charsets.UTF_8));
-    }
+	@Override
+	public void load(File file) throws FileNotFoundException, IOException, InvalidConfigurationException {
+		Validate.notNull(file, "File cannot be null");
+		this.load(new InputStreamReader(new FileInputStream(file), Charsets.UTF_8));
+	}
 }

@@ -27,9 +27,9 @@ import es.xdec0de.langapi.utils.files.enums.LAPISetting;
  * @since LangAPI v1.0
  */
 public class LangGUI implements Listener {
-	
+
 	private static List<String> onMenu = new ArrayList<String>();
-	
+
 	/**
 	 * Opens the language selection GUI to a player.
 	 * 

@@ -13,19 +13,19 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 
 class ProtocolChecker extends Config {
-	
+
 	protected static void addLangCheck() {
 		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 		manager.addPacketListener(new PacketAdapter(LAPI.getInstance(), ListenerPriority.NORMAL, PacketType.Play.Client.SETTINGS) {
-		    @Override
-		    public void onPacketReceiving(PacketEvent event) {
-		        Player player = event.getPlayer();
-		        PacketContainer packet = event.getPacket();
-		        if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED) && LAPI.getAPI().getAutoSelect(player.getUniqueId())) {
-		        	Lang lang = Lang.valueOf(packet.getStrings().read(0).toUpperCase());
-		        	LAPI.getAPI().setLanguage(player.getUniqueId(), lang, true);
-		        }
-		    }
+			@Override
+			public void onPacketReceiving(PacketEvent event) {
+				Player player = event.getPlayer();
+				PacketContainer packet = event.getPacket();
+				if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED) && LAPI.getAPI().getAutoSelect(player.getUniqueId())) {
+					Lang lang = Lang.valueOf(packet.getStrings().read(0).toUpperCase());
+					LAPI.getAPI().setLanguage(player.getUniqueId(), lang, true);
+				}
+			}
 		});
 	}
 }

@@ -8,36 +8,36 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import es.xdec0de.langapi.LAPI;
 
 public class Players {
-	
+
 	private LAPI plugin = LAPI.getInstance();
 	private FileConfiguration cfg;
 	private File file;
 	private final String path = "storage/players.yml";
-	
+
 	protected Players() {
 		if(!plugin.getDataFolder().exists()) {
 			plugin.getDataFolder().mkdir();
-	    }
-	    if(!(file = new File(plugin.getDataFolder(), path)).exists()) {
-	    	plugin.saveResource(path, false);
-	    }
-	    cfg = YamlConfiguration.loadConfiguration(file);
+		}
+		if(!(file = new File(plugin.getDataFolder(), path)).exists()) {
+			plugin.saveResource(path, false);
+		}
+		cfg = YamlConfiguration.loadConfiguration(file);
 		save();
 	}
-	  
+
 	public FileConfiguration get() {
-	    return cfg;
+		return cfg;
 	}
-	  
+
 	public void save() {
-	    try {
-	      cfg.save(file);
-	    } catch (IOException e) {
-	      Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lLangAPI&8: [&cWarning&8] &eCould not save "+path+".yml file!"));
-	    } 
+		try {
+			cfg.save(file);
+		} catch (IOException e) {
+			Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lLangAPI&8: [&cWarning&8] &eCould not save "+path+".yml file!"));
+		}
 	}
-	  
+
 	public void reload() {
-	    cfg = YamlConfiguration.loadConfiguration(file);
+		cfg = YamlConfiguration.loadConfiguration(file);
 	}
 }

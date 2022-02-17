@@ -13,7 +13,7 @@ import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
 import es.xdec0de.langapi.utils.files.enums.LAPISetting;
 
 public class LangCMD extends Config implements CommandExecutor {
-	
+
 	// /lang [language] <Player>
 	LangGUI LangGUI = new LangGUI();
 

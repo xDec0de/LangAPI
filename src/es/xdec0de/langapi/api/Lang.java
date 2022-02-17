@@ -133,7 +133,7 @@ public enum Lang {
 	YO_NG,
 	ZH_CN,
 	ZH_TW;
-	
+
 	/**
 	 * Gets a {@link Lang} with the specified name.
 	 * 
@@ -147,5 +147,5 @@ public enum Lang {
 	 */
 	public static Lang get(String name){
 		return Lang.valueOf(name);
-    }
+	}
 }

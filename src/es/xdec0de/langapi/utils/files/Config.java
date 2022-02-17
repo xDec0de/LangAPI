@@ -12,24 +12,24 @@ import es.xdec0de.langapi.api.utils.Utf8YamlConfiguration;
 import es.xdec0de.langapi.utils.files.enums.LAPISetting;
 
 public class Config {
-	
+
 	private LAPI plugin = LAPI.getInstance();
 	private FileConfiguration cfg;
 	private File file;
-	
+
 	private final String path = "config.yml";
-	
+
 	protected Config() {
 		if(!plugin.getDataFolder().exists()) {
 			plugin.getDataFolder().mkdir();
-	    }
-	    if(!(file = new File(plugin.getDataFolder(), path)).exists()) {
-	    	plugin.saveResource(path, false);
-	    }
-	    cfg = Utf8YamlConfiguration.loadConfiguration(file);
+		}
+		if(!(file = new File(plugin.getDataFolder(), path)).exists()) {
+			plugin.saveResource(path, false);
+		}
+		cfg = Utf8YamlConfiguration.loadConfiguration(file);
 		update(ignoredPaths());
 	}
-	
+
 	protected void update(List<String> ignoredPaths) {
 		try {
 			File file = new File(plugin.getDataFolder(), "config.yml");
@@ -50,57 +50,57 @@ public class Config {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lLangAPI&8: [&cWarning&8] &eCould not update "+path+" file!"));
 		}
 	}
-	
+
 	private List<String> ignoredPaths() {
 		List<String> paths = new ArrayList<String>();
 		return paths;
 	}
-	  
+
 	public FileConfiguration get() {
-	    return cfg;
+		return cfg;
 	}
-	  
+
 	public void save() {
-	    try {
-	      cfg.save(file);
-	    } catch (IOException e) {
-	      Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lLangAPI&8: &8[&cWarning&8] &eCould not save "+path+".yml file!"));
-	    } 
+		try {
+			cfg.save(file);
+		} catch (IOException e) {
+			Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6&lLangAPI&8: &8[&cWarning&8] &eCould not save "+path+".yml file!"));
+		}
 	}
-	  
+
 	public void reload() {
 	    cfg = Utf8YamlConfiguration.loadConfiguration(file);
 	}
-	
+
 	public String getString(LAPISetting setting) {
-    	return ChatColor.translateAlternateColorCodes('&', get().getString(setting.getPath()));
-    }
-	
+		return ChatColor.translateAlternateColorCodes('&', get().getString(setting.getPath()));
+	}
+
 	public String getUncoloredString(LAPISetting setting) {
-    	return get().getString(setting.getPath());
-    }
-    
+		return get().getString(setting.getPath());
+	}
+
 	public List<String> getStringList(LAPISetting setting) {
-    	List<String> list = new ArrayList<String>();
-    	for(String s : get().getStringList(setting.getPath())) {
-    		list.add(ChatColor.translateAlternateColorCodes('&', s));
-    	}
-    	return list;
-    }
-    
+		List<String> list = new ArrayList<String>();
+		for(String s : get().getStringList(setting.getPath())) {
+			list.add(ChatColor.translateAlternateColorCodes('&', s));
+		}
+		return list;
+	}
+
 	public int getInt(LAPISetting setting) {
-    	return get().getInt(setting.getPath());
-    }
-    
+		return get().getInt(setting.getPath());
+	}
+
 	public long getLong(LAPISetting setting) {
-    	return get().getLong(setting.getPath());
-    }
-    
+		return get().getLong(setting.getPath());
+	}
+
 	public double getDouble(LAPISetting setting) {
-    	return get().getDouble(setting.getPath());
-    }
-    
+		return get().getDouble(setting.getPath());
+	}
+
 	public boolean getBoolean(LAPISetting setting) {
-    	return get().getBoolean(setting.getPath());
-    }
+		return get().getBoolean(setting.getPath());
+	}
 }
