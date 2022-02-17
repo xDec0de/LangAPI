@@ -1,0 +1,29 @@
+Core:
+  Prefix: "&7&l<&6&lLangAPI&7&l>&7"
+  ErrorPrefix: "&8&l[&4&l!&8&l]&c"
+  NoConsole: "%error% That command cannot be used from the console."
+  PlayerNotFound: "%error% Player not found."
+  UpdateAvailable: "%prefix% &7A new version &8(&6v%ver%&8) &7is available, using&8: &cv%current%&7."
+Commands:
+  Lang: 
+    Success: "%prefix% Your language has been changed to &e%lang%&7."
+    SuccessOther: "%prefix% &6%player%'s &7language has been changed to &e%lang%&7."
+    NotFound: "%error% Language not found."
+    Usage: "%error% Usage&8: /&elang &8[&elang&8] <&eplayer&8>&c."
+    GUI:
+      Fill:
+        '1': "&a"
+        '2': "&a"
+        '3': "&a"
+      Title: "&e&l>&6&l> &8Language selection"
+      Items:
+        Spanish:
+          Name: "&eEspañol &8(&eES_ES&8)"
+          Lore: 
+          - " "
+          - "&e&l> &aClick to select"
+        English:
+          Name: "&eEnglish &8(&eEN_US&8)"
+          Lore: 
+          - " "
+          - "&e&l> &aClick to select"

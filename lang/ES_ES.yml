@@ -1,0 +1,29 @@
+Core:
+  Prefix: "&7&l<&6&lLangAPI&7&l>&7"
+  ErrorPrefix: "&8&l[&4&l!&8&l]&c"
+  NoConsole: "%error% Este comando no puede ser ejecutado desde la consola."
+  PlayerNotFound: "%error% Jugador no encontrado."
+  UpdateAvailable: "%prefix% &7Una nueva versión &8(&6v%ver%&8) &7está disponible, usando&8: &cv%current%&7."
+Commands:
+  Lang: 
+    Success: "%prefix% Tu idioma ha sido cambiado a &e%lang%&7."
+    SuccessOther: "%prefix% &7El idioma de &6%player% &7ha sido cambiado a &e%lang%&7."
+    NotFound: "%error% Idioma no encontrado."
+    Usage: "%error% Uso&8: /&elang &8[&eidioma&8] <&ejugador&8>&c."
+    GUI:
+      Fill:
+        '1': "&a"
+        '2': "&a"
+        '3': "&a"
+      Title: "&e&l>&6&l> &8Selección de idioma"
+      Items:
+        Spanish:
+          Name: "&eEspañol &8(&eES_ES&8)"
+          Lore: 
+          - " "
+          - "&e&l> &aClick para seleccionar"
+        English:
+          Name: "&eEnglish &8(&eEN_US&8)"
+          Lore: 
+          - " "
+          - "&e&l> &aClick para seleccionar"

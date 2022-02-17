@@ -1,0 +1,213 @@
+# |------------------------------------------------------------------------| #
+# | #                                                                    # | #
+# | #                  ------------------------------                    # | #
+# | #                  | LangAPI v1.0.0 by xDec0de_ |                    # | #
+# | #                  ------------------------------                    # | #
+# | #                                                                    # | #
+# |------------------------------------------------------------------------| #
+# |                                                                        | #
+# |                          > - INFORMATION - <                           | #
+# |                                                                        | #
+# | AutoSelect: When the user joins or changes the language, this will     | #
+# | detect the language the user has on Minecraft and select it.           | #
+# | - Requires ProtocolLib                                                 | #
+# |                                                                        | #
+# | ManualSelectDisableAutoSelect: When the user does /lang [lang], this   | #
+# | will disable automatic lang detection for that user, useful for users  | #
+# | that want to have the game and the server on different languages.      | #
+# |                                                                        | #
+# | Using: Select the languages your server will be using and the default  | #
+# | if a player has selected a language that is not in the list, so if a   | #
+# | player has selected AF_ZA and the list doesn't contain AF_ZA, the      | #
+# | default will be selected (Replace also works here)                     | #
+# |                                                                        | #
+# | Replace: Since adding 125 lang files on every plugin would be insane   | #
+# | this setting will replace some languages with others to have a general | #
+# | language selection, for example "English" instead of "English (US)"    | #
+# | TIP: Setting a lang replacement to "" won't replace it                 | #
+# |                                                                        | #
+# |------------------------------------------------------------------------| #
+
+Updater:
+  Enabled: true
+  Message:
+    Permission: "lapi.updater.notify"
+    Console: true
+    Players: true
+MySQL:
+  Enabled: false
+  StopOnError: true
+  Host: localhost
+  Port: 3306
+  Username: "username"
+  Password: "password"
+  Database: "LangAPI"
+  Table: "Players"
+  Options: "?autoReconnect=true&useUnicode=yes&useSSL=true"
+  Engine: "InnoDB"
+  CacheSendTimeInSeconds: 300
+AutoSelect: true
+ManualSelectDisableAutoSelect: true
+Using:
+  All: false
+  Default: "EN_US"
+  List:
+  - "ES_ES"
+  - "EN_US"
+Replace:
+  Enabled: true
+  Langs:
+    AF_ZA: ""
+    AR_SA: ""
+    AST_ES: "ES_ES"
+    AZ_AZ: ""
+    BA_RU: ""
+    BAR: ""
+    BE_BY: ""
+    BG_BG: ""
+    BR_FR: ""
+    BRB: ""
+    BS_BA: ""
+    CA_ES: "ES_ES"
+    CS_CZ: ""
+    CY_GB: ""
+    DA_DK: ""
+    DE_AT: ""
+    DE_CH: ""
+    DE_DE: ""
+    EL_GR: "EN_US"
+    EN_AU: "EN_US"
+    EN_CA: "EN_US"
+    EN_GB: "EN_US"
+    EN_NZ: "EN_US"
+    EN_PT: "EN_US"
+    EN_UD: "EN_US"
+    EN_US: ""
+    ENP: ""
+    ENWS: ""
+    EO_UY: "ES_ES"
+    ES_AR: "ES_ES"
+    ES_CL: "ES_ES"
+    ES_EC: "ES_ES"
+    ES_ES: ""
+    ES_MX: "ES_ES"
+    ES_UY: "ES_ES"
+    ES_VE: "ES_ES"
+    ESAN: ""
+    ET_EE: ""
+    EU_ES: ""
+    FA_IR: ""
+    FI_FI: ""
+    FIL_PH: ""
+    FO_FO: ""
+    FR_CA: ""
+    FR_FR: ""
+    FRA_DE: ""
+    FY_NL: ""
+    GA_IE: ""
+    GD_GB: ""
+    GL_ES: ""
+    GOT_DE: ""
+    GV_IM: ""
+    HAW_US: ""
+    HE_IL: ""
+    HI_IN: ""
+    HR_HR: ""
+    HU_HU: ""
+    HY_AM: ""
+    ID_ID: ""
+    IG_NG: ""
+    IO_EN: ""
+    IS_IS: ""
+    ISV: ""
+    IT_IT: ""
+    JA_JP: ""
+    JBO_EN: ""
+    KA_GE: ""
+    KAB_KAB: ""
+    KK_KZ: ""
+    KN_IN: ""
+    KO_KR: ""
+    KSH: ""
+    KW_GB: ""
+    LA_LA: ""
+    LB_LU: ""
+    LI_LI: ""
+    LOL_US: ""
+    LT_LT: ""
+    LV_LV: ""
+    MI_NZ: ""
+    MK_MK: ""
+    MN_MN: ""
+    MOH_CA: ""
+    MS_MY: ""
+    MT_MT: ""
+    NDS_DE: ""
+    NI_BE: ""
+    NL_NL: ""
+    NN_NO: ""
+    NB_NO: ""
+    NUK: ""
+    OC_FR: ""
+    OJ_CA: ""
+    OVD: ""
+    PL_PL: ""
+    PT_BR: ""
+    PT_PT: ""
+    QYA_AA: "EN_US"
+    RO_RO: ""
+    RU_RU: ""
+    SCN: ""
+    SME: ""
+    SK_SK: ""
+    SL_SI: ""
+    SO_SO: ""
+    SQ_AL: ""
+    SR_SP: ""
+    SV_SE: ""
+    SWG: ""
+    SXU: ""
+    SZL: ""
+    TA_IN: ""
+    TH_TH: ""
+    TIH_AA: ""
+    TR_TR: ""
+    TT_RU: ""
+    TZI_TZI: ""
+    UK_UA: ""
+    VAL_ES: "ES_ES"
+    VEC_IT: ""
+    VI_VN: ""
+    YI_DE: ""
+    YO_NG: ""
+    ZH_CN: ""
+    ZH_TW: "ZH_CN"
+Commands:
+  Lang:
+    GUI:
+      Enabled: true
+      Rows:
+        Amount: 3
+        Fill:
+          Enabled: true
+          Items:
+            '1': 
+              Material: "STAINED_GLASS_PANE"
+              Data: 2
+            '2':
+              Material: "STAINED_GLASS_PANE"
+              Data: 8
+            '3':
+              Material: "STAINED_GLASS_PANE"
+              Data: 2
+      Items:
+        Spanish:
+          Slot: 12
+          Amount: 1
+          Material: "LIME_STAINED_GLASS_PANE"
+          Lang: "ES_ES"
+        English:
+          Slot: 14
+          Amount: 1
+          Material: "LIME_STAINED_GLASS_PANE"
+          Lang: "EN_US"

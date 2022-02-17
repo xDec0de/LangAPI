@@ -1,0 +1,10 @@
+name: LangAPI
+main: es.xdec0de.langapi.LAPI
+author: xDec0de_
+version: ${project.version}
+softdepend: [ProtocolLib, HeadDatabase, PlaceholderAPI]
+commands:
+  lang:
+    usage: /<command>
+    description: Select your language.
+    aliases: [language]
