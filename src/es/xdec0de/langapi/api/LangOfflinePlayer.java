@@ -60,20 +60,19 @@ public class LangOfflinePlayer {
 						Connection c = LAPI.getMySQLConnection();
 						PreparedStatement statement = (PreparedStatement)c.prepareStatement(
 								"INSERT INTO " + LAPI.getFiles().getConfig().getString(LAPISetting.MYSQL_TABLE) + " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Lang=?, AutoSelect=?");
-						Settings settings = LangAPI.settingsCache.get(uuid);
 						statement.setString(1, uuid.toString());
-						statement.setString(2, settings.getLang().name());
-						statement.setBoolean(3, settings.getAutoSelect());
-						statement.setString(4, settings.getLang().name());
-						statement.setBoolean(5, settings.getAutoSelect());
+						statement.setString(2, lang.name());
+						statement.setBoolean(3, autoSelect);
+						statement.setString(4, lang.name());
+						statement.setBoolean(5, autoSelect);
 						statement.execute();
 						statement.close();
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
 				} else {
-					LAPI.getFiles().getPlayers().get().set(uuid.toString()+".Lang", LAPI.getAPI().getSettings(uuid).getLang().name());
-					LAPI.getFiles().getPlayers().get().set(uuid.toString()+".AutoSelect", LAPI.getAPI().getSettings(uuid).getAutoSelect());
+					LAPI.getFiles().getPlayers().get().set(uuid.toString()+".Lang", lang.name());
+					LAPI.getFiles().getPlayers().get().set(uuid.toString()+".AutoSelect", autoSelect);
 					LAPI.getFiles().getPlayers().save();
 					LAPI.getFiles().getPlayers().reload();
 				}
