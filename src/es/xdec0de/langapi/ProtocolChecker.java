@@ -11,10 +11,10 @@ import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.api.Lang;
 import es.xdec0de.langapi.api.LangAPI;
 import es.xdec0de.langapi.api.LangPlayer;
-import es.xdec0de.langapi.utils.files.Config;
-import es.xdec0de.langapi.utils.files.enums.LAPISetting;
+import es.xdec0de.langapi.utils.files.LAPIConfig;
+import es.xdec0de.langapi.utils.files.LAPISetting;
 
-public class ProtocolChecker extends Config {
+public class ProtocolChecker extends LAPIConfig {
 
 	public static void addLangCheck() {
 		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
@@ -22,7 +22,7 @@ public class ProtocolChecker extends Config {
 			@Override
 			public void onPacketReceiving(PacketEvent event) {
 				LangPlayer player = LangAPI.getInstance().getPlayer(event.getPlayer());
-				if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED) && player.hasAutoSelect())
+				if(LAPISetting.AUTOSELECT_ENABLED.asBoolean() && player.hasAutoSelect())
 					player.setLang(Lang.valueOf(event.getPacket().getStrings().read(0).toUpperCase()));
 			}
 		});

@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import es.xdec0de.langapi.api.LAPI;
 import es.xdec0de.langapi.api.LangAPI;
-import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
+import es.xdec0de.langapi.utils.files.LAPIMsg;
 import net.md_5.bungee.api.ChatColor;
 
 public class LAPIMessageUtils {

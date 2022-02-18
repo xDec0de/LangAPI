@@ -20,8 +20,9 @@ import es.xdec0de.langapi.api.Lang;
 import es.xdec0de.langapi.api.LangAPI;
 import es.xdec0de.langapi.api.LangPlayer;
 import es.xdec0de.langapi.utils.HeadDatabase;
-import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
-import es.xdec0de.langapi.utils.files.enums.LAPISetting;
+import es.xdec0de.langapi.utils.files.LAPIConfig;
+import es.xdec0de.langapi.utils.files.LAPIMsg;
+import es.xdec0de.langapi.utils.files.LAPISetting;
 
 /**
  * Class where the LangAPI GUI is managed.
@@ -43,9 +44,9 @@ public class LangGUI implements Listener {
 	 * @since LangAPI v1.0
 	 */
 	public void open(Player player) {
-		Inventory gui = Bukkit.createInventory(null, LAPI.getFiles().getConfig().getInt(LAPISetting.LANG_GUI_ROWS)*9, LangAPI.getInstance().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getInstance(), player));
-		if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.LANG_GUI_FILL_ENABLED)) {
-			for(int row = 0 ; row < LAPI.getFiles().getConfig().getInt(LAPISetting.LANG_GUI_ROWS) ; row++) {
+		Inventory gui = Bukkit.createInventory(null, LAPISetting.LANG_GUI_ROWS.asInt()*9, LangAPI.getInstance().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getInstance(), player));
+		if(LAPISetting.LANG_GUI_FILL_ENABLED.asBoolean()) {
+			for(int row = 0 ; row < LAPISetting.LANG_GUI_ROWS.asInt() ; row++) {
 				ItemStack fill = getFillItem(player, row+1);
 				int start = row*9;
 				int end = start+8;
@@ -56,7 +57,7 @@ public class LangGUI implements Listener {
 		}
 		LangAPI.getInstance().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getInstance(), player);
 		for(String ID : getItems()) {
-			gui.setItem(LAPI.getFiles().getConfig().get().getInt("Commands.Lang.GUI.Items."+ID+".Slot"), getItem(ID, player));
+			gui.setItem(LAPIConfig.file().getInt("Commands.Lang.GUI.Items."+ID+".Slot"), getItem(ID, player));
 		}
 		onMenu.add(player.getName());
 		player.openInventory(gui);
@@ -64,7 +65,7 @@ public class LangGUI implements Listener {
 
 	@SuppressWarnings("deprecation")
 	private ItemStack getFillItem(Player player, int row) {
-		Material material = Material.valueOf(LAPI.getFiles().getConfig().get().getString("Commands.Lang.GUI.Rows.Fill.Material."+row));
+		Material material = Material.valueOf(LAPIConfig.file().getString("Commands.Lang.GUI.Rows.Fill.Material."+row));
 		ItemStack fill = new ItemStack(material, 1);
 		fill.setDurability((short)12);
 		ItemMeta fillmeta = fill.getItemMeta();
@@ -90,11 +91,11 @@ public class LangGUI implements Listener {
 	public ItemStack getItem(String ID, Player player) {
 		ItemStack item = null;
 		Material material;
-		if(LAPI.getFiles().getConfig().get().getString("Commands.Lang.GUI.Items."+ID+".Material").startsWith("hdb-")) {
+		if(LAPIConfig.file().getString("Commands.Lang.GUI.Items."+ID+".Material").startsWith("hdb-")) {
 			HeadDatabase hdb = new HeadDatabase();
-			item = hdb.getHDBItem(LAPI.getFiles().getConfig().get().getString("Commands.Lang.GUI.Items."+ID+".Material").replaceFirst("hdb-", ""));
+			item = hdb.getHDBItem(LAPIConfig.file().getString("Commands.Lang.GUI.Items."+ID+".Material").replaceFirst("hdb-", ""));
 		} else {
-			material = Material.valueOf(LAPI.getFiles().getConfig().get().getString("Commands.Lang.GUI.Items."+ID+".Material"));
+			material = Material.valueOf(LAPIConfig.file().getString("Commands.Lang.GUI.Items."+ID+".Material"));
 			item = new ItemStack(material, 1);
 		}
 		ItemMeta meta = item.getItemMeta();
@@ -105,7 +106,7 @@ public class LangGUI implements Listener {
 	}
 
 	private ConfigurationSection getItemsSection() {
-		return LAPI.getFiles().getConfig().get().getConfigurationSection("Commands.Lang.GUI.Items");
+		return LAPIConfig.file().getConfigurationSection("Commands.Lang.GUI.Items");
 	}
 
 	/**
@@ -133,10 +134,10 @@ public class LangGUI implements Listener {
 			if(onMenu.contains(p.getName())) {
 				e.setCancelled(true);
 				for(String ID : getItems()) {
-					if(e.getSlot() == LAPI.getFiles().getConfig().get().getInt("Commands.Lang.GUI.Items."+ID+".Slot")) {
-						Lang lang = Lang.valueOf(LAPI.getFiles().getConfig().get().getString("Commands.Lang.GUI.Items."+ID+".Lang"));
+					if(e.getSlot() == LAPIConfig.file().getInt("Commands.Lang.GUI.Items."+ID+".Slot")) {
+						Lang lang = Lang.valueOf(LAPIConfig.file().getString("Commands.Lang.GUI.Items."+ID+".Lang"));
 						p.setLang(lang);
-						if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.DISABLE_AUTOSELECT) && p.hasAutoSelect())
+						if(LAPISetting.DISABLE_AUTOSELECT.asBoolean() && p.hasAutoSelect())
 							p.setAutoSelect(false);
 						p.bukkit().closeInventory();
 						return;

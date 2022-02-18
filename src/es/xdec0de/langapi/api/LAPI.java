@@ -13,15 +13,15 @@ import es.xdec0de.langapi.ProtocolChecker;
 import es.xdec0de.langapi.api.gui.LangGUI;
 import es.xdec0de.langapi.cmd.LangCMD;
 import es.xdec0de.langapi.utils.LAPIMessageUtils;
-import es.xdec0de.langapi.utils.files.FileUtils;
-import es.xdec0de.langapi.utils.files.enums.LAPISetting;
+import es.xdec0de.langapi.utils.files.LAPIConfig;
+import es.xdec0de.langapi.utils.files.LAPISetting;
+import es.xdec0de.langapi.utils.files.Players;
 
 public class LAPI extends JavaPlugin {
 
 	private static LAPI instance;
 	private static Connection connection;
 
-	private static FileUtils files;
 	private static LAPIMessageUtils msgUtils;
 	//private static UpdateChecker updater;
 
@@ -58,13 +58,12 @@ public class LAPI extends JavaPlugin {
 
 	private void executeEnable() {
 		instance = this;
-		files = new FileUtils();
-		files.setupConfig();
-		if(files.getConfig().getBoolean(LAPISetting.MYSQL_ENABLED) && !connectMySQL()) {
-			if(connectMySQL())
+		LAPIConfig.setup(false);
+		if(LAPISetting.MYSQL_ENABLED.asBoolean()) {
+			if(!connectMySQL())
 				return;
 		} else
-			files.setupPlayers();
+			Players.setup(false);
 		msgUtils = new LAPIMessageUtils();
 		LangAPI.getInstance().createFiles(this);
 		LangAPI.getInstance().updateFiles(this, ignoredMessages());
@@ -72,7 +71,7 @@ public class LAPI extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(DataHandler.getInstance(), this);
 		getServer().getPluginManager().registerEvents(new LangGUI(), this);
 		//getServer().getPluginManager().registerEvents(updater = new UpdateChecker(), this);
-		int dbDelay = files.getConfig().getInt(LAPISetting.MYSQL_CACHE_TIME) * 20;
+		int dbDelay = LAPISetting.MYSQL_CACHE_TIME.asInt() * 20;
 		Bukkit.getScheduler().runTaskTimerAsynchronously(getPlugin(LAPI.class), () -> DataHandler.getInstance().saveAll(), dbDelay, dbDelay);
 	}
 
@@ -95,17 +94,10 @@ public class LAPI extends JavaPlugin {
 		if(Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
 			ProtocolChecker.addLangCheck();
 			msgUtils.logCol("  &e- &bProtocolLib &7detected (&av" + Bukkit.getPluginManager().getPlugin("ProtocolLib").getDescription().getVersion() + "&7)");
-		} else {
-			if(files.getConfig().getBoolean(LAPISetting.AUTOSELECT_ENABLED)) {
-				files.getConfig().get().set(LAPISetting.AUTOSELECT_ENABLED.getPath(), false);
-				files.getConfig().save();
-				files.getConfig().reload();
-			}
+		} else if(LAPISetting.AUTOSELECT_ENABLED.asBoolean())
 			msgUtils.logCol("  &e- ProtocolLib &cnot detected, &6language detection&c won't work.");
-		}
-		if(Bukkit.getPluginManager().isPluginEnabled("HeadDatabase")) {
+		if(Bukkit.getPluginManager().isPluginEnabled("HeadDatabase"))
 			msgUtils.logCol("  &e- &bHeadDatabase &7detected (&av" + Bukkit.getPluginManager().getPlugin("HeadDatabase").getDescription().getVersion() + "&7)");
-		}
 		msgUtils.log(" ");
 	}
 
@@ -114,8 +106,13 @@ public class LAPI extends JavaPlugin {
 			try {
 				if(connection == null || connection.isClosed()) { 
 					Class.forName("com.mysql.jdbc.Driver");
-					connection = (Connection)DriverManager.getConnection("jdbc:mysql://" + files.getConfig().getString(LAPISetting.MYSQL_HOST) + ":" + files.getConfig().getInt(LAPISetting.MYSQL_PORT) + "/" + files.getConfig().getString(LAPISetting.MYSQL_DATABASE) + files.getConfig().getString(LAPISetting.MYSQL_OPTIONS), files.getConfig().getString(LAPISetting.MYSQL_USERNAME),files.getConfig().getString(LAPISetting.MYSQL_PASSWORD)); 	
-					PreparedStatement statement = (PreparedStatement)connection.prepareStatement("CREATE TABLE IF NOT EXISTS `" + files.getConfig().getString(LAPISetting.MYSQL_DATABASE) + "`.`" + files.getConfig().getString(LAPISetting.MYSQL_TABLE) + "` ( `UUID` VARCHAR(255) NOT NULL , `Lang` TEXT NOT NULL , `AutoSelect` TINYINT NOT NULL, CONSTRAINT PK_UUID PRIMARY KEY (UUID)) ENGINE = "+files.getConfig().getString(LAPISetting.MYSQL_ENGINE)+";");
+
+					connection = (Connection)DriverManager.getConnection("jdbc:mysql://" + LAPISetting.MYSQL_HOST.asString() + ":" + LAPISetting.MYSQL_PORT.asInt() + "/" +
+					LAPISetting.MYSQL_DATABASE.asString() + LAPISetting.MYSQL_OPTIONS.asString(), LAPISetting.MYSQL_USERNAME.asString(), LAPISetting.MYSQL_PASSWORD.asString());
+
+					PreparedStatement statement = (PreparedStatement)connection.prepareStatement("CREATE TABLE IF NOT EXISTS `" + LAPISetting.MYSQL_DATABASE.asString() +
+							"`.`" + LAPISetting.MYSQL_TABLE.asString() + "` ( `UUID` VARCHAR(255) NOT NULL , `Lang` TEXT NOT NULL , `AutoSelect` TINYINT NOT NULL, CONSTRAINT PK_UUID PRIMARY KEY (UUID)) ENGINE = "+
+							LAPISetting.MYSQL_ENGINE.asString()+";");
 					statement.execute();
 					statement.close();
 				}
@@ -128,7 +125,7 @@ public class LAPI extends JavaPlugin {
 	}
 
 	private void MySQLError(Exception e) {
-		if(files.getConfig().getBoolean(LAPISetting.MYSQL_ERROR_STOP)) {
+		if(LAPISetting.MYSQL_ERROR_STOP.asBoolean()) {
 			msgUtils.logCol("&8|------------------------------------------>");
 			msgUtils.log(" ");
 			msgUtils.logCol("&e      LangAPI &7MySQL connection error");
@@ -154,10 +151,6 @@ public class LAPI extends JavaPlugin {
 
 	public static Connection getMySQLConnection() {
 		return connection;
-	}
-
-	public static FileUtils getFiles() {
-		return files;
 	}
 
 	/**

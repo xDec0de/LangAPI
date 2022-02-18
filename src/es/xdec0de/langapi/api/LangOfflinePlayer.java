@@ -8,7 +8,8 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import es.xdec0de.langapi.utils.files.enums.LAPISetting;
+import es.xdec0de.langapi.utils.files.LAPISetting;
+import es.xdec0de.langapi.utils.files.Players;
 
 public class LangOfflinePlayer {
 
@@ -64,11 +65,11 @@ public class LangOfflinePlayer {
 		Bukkit.getScheduler().runTaskAsynchronously(LAPI.getInstance(), new Runnable() {
 			@Override
 			public void run() {
-				if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.MYSQL_ENABLED)) {
+				if(LAPISetting.MYSQL_ENABLED.asBoolean()) {
 					try {
 						Connection c = LAPI.getMySQLConnection();
 						PreparedStatement statement = (PreparedStatement)c.prepareStatement(
-								"INSERT INTO " + LAPI.getFiles().getConfig().getString(LAPISetting.MYSQL_TABLE) + " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Lang=?, AutoSelect=?");
+								"INSERT INTO " + LAPISetting.MYSQL_TABLE.asString() + " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Lang=?, AutoSelect=?");
 						statement.setString(1, uuid.toString());
 						statement.setString(2, lang.name());
 						statement.setBoolean(3, autoSelect);
@@ -80,10 +81,10 @@ public class LangOfflinePlayer {
 						e.printStackTrace();
 					}
 				} else {
-					LAPI.getFiles().getPlayers().get().set(uuid.toString()+".Lang", lang.name());
-					LAPI.getFiles().getPlayers().get().set(uuid.toString()+".AutoSelect", autoSelect);
-					LAPI.getFiles().getPlayers().save();
-					LAPI.getFiles().getPlayers().reload();
+					Players.file().set(uuid.toString()+".Lang", lang.name());
+					Players.file().set(uuid.toString()+".AutoSelect", autoSelect);
+					Players.save();
+					Players.reload();
 				}
 			}
 		});

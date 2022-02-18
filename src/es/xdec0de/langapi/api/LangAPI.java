@@ -1,6 +1,8 @@
 package es.xdec0de.langapi.api;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,8 +20,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import es.xdec0de.langapi.api.utils.Utf8YamlConfiguration;
-import es.xdec0de.langapi.utils.files.FileUtils;
-import es.xdec0de.langapi.utils.files.enums.LAPISetting;
+import es.xdec0de.langapi.utils.files.LAPIConfig;
+import es.xdec0de.langapi.utils.files.LAPISetting;
 
 
 /**
@@ -31,7 +33,7 @@ import es.xdec0de.langapi.utils.files.enums.LAPISetting;
  *
  * @since LangAPI v1.0
  */
-public class LangAPI extends FileUtils {
+public class LangAPI {
 
 	private static LangAPI instance;
 
@@ -106,7 +108,7 @@ public class LangAPI extends FileUtils {
 						file.createNewFile();
 						Utf8YamlConfiguration def = new Utf8YamlConfiguration();
 						FileConfiguration filecfg = Utf8YamlConfiguration.loadConfiguration(file);
-						def.load(LAPI.getFiles().copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/default.yml")));
+						def.load(copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/default.yml")));
 						for(String str : def.getKeys(true)) {
 							filecfg.set(str, def.get(str));
 						}
@@ -151,9 +153,9 @@ public class LangAPI extends FileUtils {
 				FileConfiguration filecfg = Utf8YamlConfiguration.loadConfiguration(file);
 				Utf8YamlConfiguration def = new Utf8YamlConfiguration();
 				if(plugin.getResource("lang/"+lang.name()+".yml") != null)
-					def.load(LAPI.getFiles().copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/"+lang.name()+".yml")));
+					def.load(copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/"+lang.name()+".yml")));
 				else
-					def.load(LAPI.getFiles().copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/default.yml")));
+					def.load(copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/default.yml")));
 				for(String str : def.getKeys(true))
 					if(!filecfg.getKeys(true).contains(str))
 						filecfg.set(str, def.get(str));
@@ -193,9 +195,9 @@ public class LangAPI extends FileUtils {
 				FileConfiguration filecfg = Utf8YamlConfiguration.loadConfiguration(file);
 				Utf8YamlConfiguration def = new Utf8YamlConfiguration();
 				if(plugin.getResource("lang/"+lang.name()+".yml") != null)
-					def.load(LAPI.getFiles().copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/"+lang.name()+".yml")));
+					def.load(copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/"+lang.name()+".yml")));
 				else
-					def.load(LAPI.getFiles().copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/default.yml")));
+					def.load(copyInputStreamToFile(plugin.getDataFolder()+ "/lang/"+lang.name()+".yml", plugin.getResource("lang/default.yml")));
 				for(String str : def.getKeys(true))
 					if(!ignoredPaths.contains(str) && !filecfg.getKeys(true).contains(str))
 						filecfg.set(str, def.get(str));
@@ -750,7 +752,7 @@ public class LangAPI extends FileUtils {
 	 * @since LangAPI v1.0
 	 */
 	public Lang getDefaultLanguage() {
-		return Lang.valueOf(LAPI.getFiles().getConfig().getString(LAPISetting.DEFAULT_LANG));
+		return Lang.valueOf(LAPISetting.DEFAULT_LANG.asString());
 	}
 
 	/**
@@ -765,9 +767,9 @@ public class LangAPI extends FileUtils {
 	 * @since LangAPI v1.0
 	 */
 	public Lang getReplacement(Lang language) {
-		if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.REPLACE_ENABLED))
-			if(!LAPI.getFiles().getConfig().get().getString("Replace.Langs."+language.name()).equals(""))
-				return Lang.valueOf(LAPI.getFiles().getConfig().get().getString("Replace.Langs."+language.name()));
+		if(LAPISetting.REPLACE_ENABLED.asBoolean())
+			if(!LAPIConfig.file().getString("Replace.Langs."+language.name()).isEmpty())
+				return Lang.valueOf(LAPIConfig.file().getString("Replace.Langs."+language.name()));
 		return language;
 	}
 
@@ -783,7 +785,7 @@ public class LangAPI extends FileUtils {
 	 * @since LangAPI v1.0
 	 */
 	public boolean isAllowed(Lang language) {
-		return LAPI.getFiles().getConfig().getBoolean(LAPISetting.ALL_LANGUAGES_ENABLED) ? true : getLanguagesAllowed().contains(language);
+		return LAPISetting.ALL_LANGUAGES_ENABLED.asBoolean() ? true : getLanguagesAllowed().contains(language);
 	}
 
 	/**
@@ -795,10 +797,10 @@ public class LangAPI extends FileUtils {
 	 * @since LangAPI v1.0
 	 */
 	public List<Lang> getLanguagesAllowed() {
-		if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.ALL_LANGUAGES_ENABLED))
+		if(LAPISetting.ALL_LANGUAGES_ENABLED.asBoolean())
 			return Arrays.asList(Lang.values());
 		List<Lang> allowed = new ArrayList<Lang>();
-		LAPI.getFiles().getConfig().getStringList(LAPISetting.LANGS_USING).stream().forEach(lang -> allowed.add(Lang.valueOf(lang)));
+		LAPISetting.LANGS_USING.asStringList().stream().forEach(lang -> allowed.add(Lang.valueOf(lang)));
 		return allowed;
 	}
 
@@ -825,5 +827,19 @@ public class LangAPI extends FileUtils {
 
 	public LangOfflinePlayer getOfflinePlayer(UUID uuid) {
 		return DataHandler.getInstance().getOfflinePlayer(uuid);
+	}
+
+	public File copyInputStreamToFile(String path, InputStream inputStream) {
+		File file = new File(path);
+		try (FileOutputStream outputStream = new FileOutputStream(file)) {
+			int read;
+			byte[] bytes = new byte[1024];
+			while ((read = inputStream.read(bytes)) != -1)
+				outputStream.write(bytes, 0, read);
+			return file;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

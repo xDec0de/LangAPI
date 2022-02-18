@@ -11,8 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import es.xdec0de.langapi.api.LAPI;
-import es.xdec0de.langapi.utils.files.enums.LAPIMsg;
-import es.xdec0de.langapi.utils.files.enums.LAPISetting;
+import es.xdec0de.langapi.utils.files.LAPIMsg;
+import es.xdec0de.langapi.utils.files.LAPISetting;
 import net.md_5.bungee.api.ChatColor;
 
 public class UpdateChecker implements Listener {
@@ -32,8 +32,8 @@ public class UpdateChecker implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.UPDATER_ENABLED) && LAPI.getFiles().getConfig().getBoolean(LAPISetting.UPDATER_MESSAGE_PLAYER)) {
-			if(e.getPlayer().hasPermission(LAPI.getFiles().getConfig().getString(LAPISetting.UPDATER_MESSAGE_PERMISSION))) {
+		if(LAPISetting.UPDATER_ENABLED.asBoolean() && LAPISetting.UPDATER_MESSAGE_PLAYER.asBoolean()) {
+			if(e.getPlayer().hasPermission(LAPISetting.UPDATER_MESSAGE_PERMISSION.asString())) {
 				getLatestVersion(version -> {
 					if(!LAPI.getInstance().getDescription().getVersion().equalsIgnoreCase(version))
 						LAPI.getMessages().send(e.getPlayer(), LAPIMsg.UPDATE_AVAILABLE_PLAYER, new String[] {"%current%", LAPI.getInstance().getDescription().getVersion()}, new String[] {"%ver%", version});

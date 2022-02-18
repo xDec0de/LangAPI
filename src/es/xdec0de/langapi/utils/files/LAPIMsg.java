@@ -1,4 +1,4 @@
-package es.xdec0de.langapi.utils.files.enums;
+package es.xdec0de.langapi.utils.files;
 
 public enum LAPIMsg {
 

@@ -14,7 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import es.xdec0de.langapi.utils.files.enums.LAPISetting;
+import es.xdec0de.langapi.utils.files.LAPISetting;
+import es.xdec0de.langapi.utils.files.Players;
 
 class DataHandler implements Listener {
 
@@ -91,12 +92,12 @@ class DataHandler implements Listener {
 	void saveAll() {
 		List<LangOfflinePlayer> players = new ArrayList<LangOfflinePlayer>(offlineCache.values());
 		players.addAll(onlineCache.values());
-		if(LAPI.getFiles().getConfig().getBoolean(LAPISetting.MYSQL_ENABLED)) {
+		if(LAPISetting.MYSQL_ENABLED.asBoolean()) {
 			try {
 				Connection c = LAPI.getMySQLConnection();
 				c.setAutoCommit(false);
 				PreparedStatement statement = (PreparedStatement)c.prepareStatement(
-						"INSERT INTO " + LAPI.getFiles().getConfig().getString(LAPISetting.MYSQL_TABLE) + " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Lang=?, AutoSelect=?");
+						"INSERT INTO " + LAPISetting.MYSQL_TABLE.asString() + " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Lang=?, AutoSelect=?");
 				for(LangOfflinePlayer player : players) {
 					statement.setString(1, player.getUUID().toString());
 					statement.setString(2, player.getLang().name());
@@ -115,11 +116,11 @@ class DataHandler implements Listener {
 		} else {
 			for(LangOfflinePlayer player : players) {
 				String id = player.getUUID().toString();
-				LAPI.getFiles().getPlayers().get().set(id+".Lang", player.getLang().name());
-				LAPI.getFiles().getPlayers().get().set(id+".AutoSelect", player.hasAutoSelect());
+				Players.file().set(id+".Lang", player.getLang().name());
+				Players.file().set(id+".AutoSelect", player.hasAutoSelect());
 			}
-			LAPI.getFiles().getPlayers().save();
-			LAPI.getFiles().getPlayers().reload();
+			Players.save();
+			Players.reload();
 		}
 	}
 }

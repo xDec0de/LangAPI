@@ -1,4 +1,6 @@
-package es.xdec0de.langapi.utils.files.enums;
+package es.xdec0de.langapi.utils.files;
+
+import java.util.List;
 
 public enum LAPISetting {
 	
@@ -40,5 +42,21 @@ public enum LAPISetting {
 	
 	public String getPath() {
 		return path;
+	}
+
+	public String asString() {
+		return LAPIConfig.cfg.getString(path);
+	}
+
+	public List<String> asStringList() {
+		return LAPIConfig.cfg.getStringList(path);
+	}
+
+	public int asInt() {
+		return LAPIConfig.cfg.getInt(path);
+	}
+
+	public boolean asBoolean() {
+		return LAPIConfig.cfg.getBoolean(path);
 	}
 }
