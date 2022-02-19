@@ -20,7 +20,7 @@ public class UpdateChecker implements Listener {
 	private static final int resourceId = 0;
 
 	public void getLatestVersion(final Consumer<String> consumer) {
-		Bukkit.getScheduler().runTaskAsynchronously(LAPI.getInstance(), () -> {
+		Bukkit.getScheduler().runTaskAsynchronously(LAPI.getPlugin(LAPI.class), () -> {
 			try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resourceId).openStream(); Scanner scanner = new Scanner(inputStream)) {
 				if (scanner.hasNext())
 					consumer.accept(scanner.next());
@@ -35,8 +35,8 @@ public class UpdateChecker implements Listener {
 		if(LAPISetting.UPDATER_ENABLED.asBoolean() && LAPISetting.UPDATER_MESSAGE_PLAYER.asBoolean()) {
 			if(e.getPlayer().hasPermission(LAPISetting.UPDATER_MESSAGE_PERMISSION.asString())) {
 				getLatestVersion(version -> {
-					if(!LAPI.getInstance().getDescription().getVersion().equalsIgnoreCase(version))
-						LAPI.getMessages().send(e.getPlayer(), LAPIMsg.UPDATE_AVAILABLE_PLAYER, new String[] {"%current%", LAPI.getInstance().getDescription().getVersion()}, new String[] {"%ver%", version});
+					if(!LAPI.getPlugin(LAPI.class).getDescription().getVersion().equalsIgnoreCase(version))
+						LAPI.getMessages().send(e.getPlayer(), LAPIMsg.UPDATE_AVAILABLE_PLAYER, new String[] {"%current%", LAPI.getPlugin(LAPI.class).getDescription().getVersion()}, new String[] {"%ver%", version});
 				});
 			}
 		}

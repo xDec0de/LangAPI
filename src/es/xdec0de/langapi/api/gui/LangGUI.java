@@ -44,7 +44,7 @@ public class LangGUI implements Listener {
 	 * @since LangAPI v1.0
 	 */
 	public void open(Player player) {
-		Inventory gui = Bukkit.createInventory(null, LAPISetting.LANG_GUI_ROWS.asInt()*9, LangAPI.getInstance().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getInstance(), player));
+		Inventory gui = Bukkit.createInventory(null, LAPISetting.LANG_GUI_ROWS.asInt()*9, LangAPI.getInstance().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getPlugin(LAPI.class), player));
 		if(LAPISetting.LANG_GUI_FILL_ENABLED.asBoolean()) {
 			for(int row = 0 ; row < LAPISetting.LANG_GUI_ROWS.asInt() ; row++) {
 				ItemStack fill = getFillItem(player, row+1);
@@ -55,7 +55,7 @@ public class LangGUI implements Listener {
 				}
 			}
 		}
-		LangAPI.getInstance().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getInstance(), player);
+		LangAPI.getInstance().getString(LAPIMsg.LANG_GUI_TITLE.getPath(), LAPI.getPlugin(LAPI.class), player);
 		for(String ID : getItems()) {
 			gui.setItem(LAPIConfig.file().getInt("Commands.Lang.GUI.Items."+ID+".Slot"), getItem(ID, player));
 		}
@@ -69,7 +69,7 @@ public class LangGUI implements Listener {
 		ItemStack fill = new ItemStack(material, 1);
 		fill.setDurability((short)12);
 		ItemMeta fillmeta = fill.getItemMeta();
-		fillmeta.setDisplayName(LangAPI.getInstance().getString("Commands.Lang.GUI.Fill."+row, LAPI.getInstance(), player));
+		fillmeta.setDisplayName(LangAPI.getInstance().getString("Commands.Lang.GUI.Fill."+row, LAPI.getPlugin(LAPI.class), player));
 		fill.setItemMeta(fillmeta);
 		return fill;
 	}
@@ -99,8 +99,8 @@ public class LangGUI implements Listener {
 			item = new ItemStack(material, 1);
 		}
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(LangAPI.getInstance().getString("Commands.Lang.GUI.Items."+ID+".Name", LAPI.getInstance(), player));
-		meta.setLore(LangAPI.getInstance().getStringList("Commands.Lang.GUI.Items."+ID+".Lore", LAPI.getInstance(), player));
+		meta.setDisplayName(LangAPI.getInstance().getString("Commands.Lang.GUI.Items."+ID+".Name", LAPI.getPlugin(LAPI.class), player));
+		meta.setLore(LangAPI.getInstance().getStringList("Commands.Lang.GUI.Items."+ID+".Lore", LAPI.getPlugin(LAPI.class), player));
 		item.setItemMeta(meta);
 		return item;
 	}

@@ -62,7 +62,7 @@ public class LangOfflinePlayer {
 	 */
 
 	void save() {
-		Bukkit.getScheduler().runTaskAsynchronously(LAPI.getInstance(), new Runnable() {
+		Bukkit.getScheduler().runTaskAsynchronously(LAPI.getPlugin(LAPI.class), new Runnable() {
 			@Override
 			public void run() {
 				if(LAPISetting.MYSQL_ENABLED.asBoolean()) {

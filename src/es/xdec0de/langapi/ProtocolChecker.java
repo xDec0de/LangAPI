@@ -18,7 +18,7 @@ public class ProtocolChecker extends LAPIConfig {
 
 	public static void addLangCheck() {
 		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-		manager.addPacketListener(new PacketAdapter(LAPI.getInstance(), ListenerPriority.NORMAL, PacketType.Play.Client.SETTINGS) {
+		manager.addPacketListener(new PacketAdapter(LAPI.getPlugin(LAPI.class), ListenerPriority.NORMAL, PacketType.Play.Client.SETTINGS) {
 			@Override
 			public void onPacketReceiving(PacketEvent event) {
 				LangPlayer player = LangAPI.getInstance().getPlayer(event.getPlayer());

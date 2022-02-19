@@ -12,9 +12,10 @@ public class LAPIMessageUtils {
 
 	public String get(Player player, LAPIMsg message) {
 		LangAPI api = LangAPI.getInstance();
-		return api.getString(message.getPath(), LAPI.getInstance(), player)
-				.replaceAll("%error%", api.getString(LAPIMsg.ERROR_PREFIX.getPath(), LAPI.getInstance(), player))
-				.replaceAll("%prefix%", api.getString(LAPIMsg.PREFIX.getPath(), LAPI.getInstance(), player));
+		LAPI lapi = LAPI.getPlugin(LAPI.class);
+		return api.getString(message.getPath(), lapi, player)
+				.replaceAll("%error%", api.getString(LAPIMsg.ERROR_PREFIX.getPath(), lapi, player))
+				.replaceAll("%prefix%", api.getString(LAPIMsg.PREFIX.getPath(), lapi, player));
 	}
 
 	public String get(Player player, LAPIMsg message, String[]... replace) {
@@ -29,9 +30,10 @@ public class LAPIMessageUtils {
 
 	public String get(CommandSender sender, LAPIMsg message) {
 		LangAPI api = LangAPI.getInstance();
-		return api.getString(message.getPath(), LAPI.getInstance(), sender)
-				.replaceAll("%error%", api.getString(LAPIMsg.ERROR_PREFIX.getPath(), LAPI.getInstance(), sender))
-				.replaceAll("%prefix%", api.getString(LAPIMsg.PREFIX.getPath(), LAPI.getInstance(), sender));
+		LAPI lapi = LAPI.getPlugin(LAPI.class);
+		return api.getString(message.getPath(), lapi, sender)
+				.replaceAll("%error%", api.getString(LAPIMsg.ERROR_PREFIX.getPath(), lapi, sender))
+				.replaceAll("%prefix%", api.getString(LAPIMsg.PREFIX.getPath(), lapi, sender));
 	}
 
 	public String get(CommandSender sender, LAPIMsg message, String[]... replace) {

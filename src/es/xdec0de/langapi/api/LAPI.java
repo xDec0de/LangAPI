@@ -19,7 +19,6 @@ import es.xdec0de.langapi.utils.files.Players;
 
 public class LAPI extends JavaPlugin {
 
-	private static LAPI instance;
 	private static Connection connection;
 
 	private static LAPIMessageUtils msgUtils;
@@ -34,7 +33,7 @@ public class LAPI extends JavaPlugin {
 		msgUtils.log(" ");
 		msgUtils.logCol("  &b- &7Author&8: &bxDec0de_");
 		msgUtils.log(" ");
-		msgUtils.logCol("  &b- &7Version: &b"+instance.getDescription().getVersion());
+		msgUtils.logCol("  &b- &7Version: &b"+getDescription().getVersion());
 		msgUtils.log(" ");
 		msgUtils.logCol("&8|------------------------------------------>");
 		checkDependencies();
@@ -49,7 +48,7 @@ public class LAPI extends JavaPlugin {
 		msgUtils.log(" ");
 		msgUtils.logCol("  &b- &7Author&8: &bxDec0de_");
 		msgUtils.log(" ");
-		msgUtils.logCol("  &b- &7Version: &b"+instance.getDescription().getVersion());
+		msgUtils.logCol("  &b- &7Version: &b"+getDescription().getVersion());
 		msgUtils.log(" ");
 		msgUtils.logCol("&8|------------------------------------------>");
 		msgUtils.log(" ");
@@ -57,7 +56,6 @@ public class LAPI extends JavaPlugin {
 	}
 
 	private void executeEnable() {
-		instance = this;
 		LAPIConfig.setup(false);
 		if(LAPISetting.MYSQL_ENABLED.asBoolean()) {
 			if(!connectMySQL())
@@ -142,7 +140,7 @@ public class LAPI extends JavaPlugin {
 			msgUtils.logCol("&4- &7Disabling plugin, stop is recommended.");
 			msgUtils.log(" ");
 			msgUtils.logCol("&8|------------------------------------------>");
-			Bukkit.getPluginManager().disablePlugin(instance);
+			Bukkit.getPluginManager().disablePlugin(this);
 		}
 		msgUtils.log(" ");
 		msgUtils.logCol("&4- &7Check your config, error&8: &e"+e.getCause());
@@ -151,19 +149,6 @@ public class LAPI extends JavaPlugin {
 
 	public static Connection getMySQLConnection() {
 		return connection;
-	}
-
-	/**
-	 * Returns the instance of the LAPI class, better known as the <strong>plugin instance</strong>.
-	 * 
-	 * @return The instance of the plugin.
-	 * 
-	 * @see #getAPI()
-	 * 
-	 * @since LangAPI v1.0
-	 */
-	public static LAPI getInstance() {
-		return instance;
 	}
 
 	public static LAPIMessageUtils getMessages() {
